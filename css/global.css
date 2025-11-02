@@ -1,0 +1,100 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ========== ANIMACIONES PERSONALIZADAS ========== */
+
+@keyframes marquee {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.marquee {
+  display: inline-block;
+  animation: marquee 15s linear infinite;
+}
+
+@keyframes blink {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+/* ========== BASE ========= */
+
+@layer base {
+  html, body {
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply text-primaryText font-bold;
+  }
+
+  p {
+    @apply text-secondaryText;
+  }
+
+  a {
+    @apply text-accent hover:underline;
+  }
+
+  button {
+    @apply font-semibold transition duration-300 ease-in-out;
+  }
+
+  input, textarea, select {
+    @apply bg-secondaryBg text-primaryText placeholder-secondaryText rounded-md px-4 py-2;
+    @apply focus:outline-none focus:ring-2 focus:ring-accent;
+  }
+}
+
+
+
+/* Dots activos y normales */
+.slick-dots li button:before {
+  color: #3F8CFF !important; /* azul fuerte */
+  font-size: 12px;
+  opacity: 0.6;
+}
+.slick-dots li.slick-active button:before {
+  color: #3F8CFF !important;
+  opacity: 1;
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  animation: marquee 30s linear infinite;
+}
+
+
+/* ========== animaciones de botones ========= */
+/* ========== Animación sutil para CTA (float suave) ========== */
+@keyframes float-soft {
+  0%   { transform: translateY(0); }
+  50%  { transform: translateY(-4px); }
+  100% { transform: translateY(0); }
+}
+
+.animate-float-soft {
+  animation: float-soft 2.8s ease-in-out infinite;
+}
+
+/* Respeto de accesibilidad: si el usuario prefiere menos movimiento */
+@media (prefers-reduced-motion: reduce) {
+  .animate-float-soft {
+    animation: none !important;
+  }
+}

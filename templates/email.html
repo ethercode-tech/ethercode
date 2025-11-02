@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mensaje Recibido</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+      }
+
+      .container {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        width: 80%;
+        max-width: 600px;
+        text-align: center;
+      }
+
+      h1 {
+        color: #333;
+      }
+
+      p {
+        color: #555;
+      }
+
+      .info-container {
+        text-align: left;
+        margin-top: 20px;
+      }
+
+      .info-label {
+        font-weight: bold;
+      }
+
+      .info-value {
+        margin-bottom: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Mensaje Recibido</h1>
+      <p>Has recibido un nuevo mensaje. Aquí están los detalles:</p>
+
+      <div class="info-container">
+        <!-- <div class="info-label">De:</div>
+        <div class="info-value">{{email}}</div>
+
+        <div class="info-label">Asunto:</div>
+        <div class="info-value">{{asunto}}</div>
+
+        <div class="info-label">Mensaje:</div>
+        <div class="info-value">{{mensaje}}</div> -->
+        ${htmlData}
+      </div>
+    </div>
+  </body>
+</html>

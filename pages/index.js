@@ -1,0 +1,221 @@
+import React, { useState, useEffect } from "react";
+import Head from "next/head";
+import NavbarIndex from "../components/NavbarIndex";
+import Footer from "../components/footer";
+import Contact from "./contact";
+import { Element } from "react-scroll";
+import HeroGrid from "../components/hero-grid";
+import Services from "../components/services";
+import ChatWhatsapp from "../components/buttonWhatsapp";
+import ButtonTop from "../components/buttonTop";
+import UseCases from "../components/useCases";
+import ChatBot from "../components/chatBotButton";
+import LogoSlider from "../components/clientes/LogoSlider";
+import EtherCodeChat from "../components/EtherCodeChat";
+
+
+const Home = () => {
+  const links = [
+    { name: "Inicio", href: "/" },
+    { name: "Agentes IA", href: "/servicios" },
+    { name: "Contacto", href: "/contact" },
+    { name: "Nosotros", href: "/nosotros" },
+  ];
+
+  const [isClient, setIsClient] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [open, setOpen] = useState(true);
+  
+  const [progress, setProgress] = useState(0);
+  const [completed, setCompleted] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true); // habilita el uso de localStorage
+
+    if (typeof window !== "undefined") {
+      const hasLoaded = localStorage.getItem("hasLoaded");
+
+      if (hasLoaded) {
+        setIsLoading(false);
+        return;
+      }
+
+      const timer = setInterval(() => {
+        setProgress((prev) => {
+          if (prev >= 100) {
+            clearInterval(timer);
+            setCompleted(true);
+            setTimeout(() => {
+              setIsLoading(false);
+              localStorage.setItem("hasLoaded", "true");
+            }, 800);
+            return prev;
+          }
+          return prev + 1;
+        });
+      }, 20);
+
+      return () => clearInterval(timer);
+    }
+  }, []);
+
+
+
+  const startProgress = () => {
+    const timer = setInterval(() => {
+      setProgress((prev) => {
+        if (prev >= 100) {
+          clearInterval(timer);
+          setTimeout(() => {
+            setIsLoading(false);
+            localStorage.setItem("hasLoaded", "true");
+          }, 1000);
+          return prev;
+        }
+        return prev + 1;
+      });
+    }, 20);
+    setCompleted(true);
+  };
+
+  return (
+    <>
+      <Head>
+        <title>
+          Empleados Digitales con IA para Empresas | EtherCode
+        </title>
+
+        <meta
+          name="description"
+          content="EtherCode crea empleados digitales con inteligencia artificial para que tu negocio nunca se detenga. Atención al cliente, automatización y eficiencia 24/7."
+        />
+        <meta
+          name="keywords"
+          content="empleado digital, asistentes IA, agentes inteligentes, inteligencia artificial para empresas, automatización empresarial, chatbot whatsapp, empleados virtuales, IA para negocios, automatizar procesos, empleados IA Argentina"
+        />
+
+        <meta
+          property="og:title"
+          content="Empleados Digitales con IA para Empresas | EtherCode"
+        />
+        <meta
+          property="og:description"
+          content="Automatizá tu atención al cliente, ventas y operaciones con asistentes inteligentes. Tu nuevo empleado digital trabaja 24/7, sin excusas."
+        />
+        <meta property="og:image" content="/img-logo/EtherCodeSlogan.png" />
+        <meta property="og:url" content="https://www.ethercode.com.ar" />
+
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta
+          name="twitter:title"
+          content="Empleados Digitales con IA para Empresas"
+        />
+        <meta
+          name="twitter:description"
+          content="Automatizá tu negocio con asistentes IA que trabajan como empleados virtuales. Siempre disponibles, siempre eficientes."
+        />
+        <meta name="twitter:image" content="/img-logo/EtherCodeSlogan.png" />
+
+        <meta name="robots" content="index, follow" />
+        <meta name="author" content="EtherCode" />
+        <link rel="icon" href="/img-logo/logo-ethercode-sin-fondo-negro.ico" />
+        <link rel="canonical" href="https://www.ethercode.com.ar" />
+
+        {/* Preguntas SEO estilo LLM */}
+        <meta
+          name="search-questions"
+          content="¿Qué es un empleado digital con IA? ¿Cómo automatizar tareas con inteligencia artificial? ¿Un bot puede atender mi negocio en WhatsApp? ¿Qué hace un asistente inteligente? ¿Cómo usar IA para atención al cliente? ¿Cómo vender más con inteligencia artificial?"
+        />
+
+        {/* Structured Data para motores de búsqueda y LLMs */}
+        <script type="application/ld+json">
+          {`
+          {
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            "name": "EtherCode",
+            "url": "https://www.ethercode.com.ar",
+            "description": "EtherCode desarrolla empleados digitales con inteligencia artificial para automatizar ventas, atención al cliente y operaciones empresariales.",
+            "publisher": {
+              "@type": "Organization",
+              "name": "EtherCode",
+              "url": "https://www.ethercode.com.ar",
+              "logo": {
+                "@type": "ImageObject",
+                "url": "https://www.ethercode.com.ar/img-logo/EtherCodeSlogan.png"
+              }
+            }
+          }
+          `}
+        </script>
+      </Head>
+
+      {/* Botones de idioma */}
+
+      {isLoading ? (
+        <div
+          className="min-h-screen flex flex-col justify-center items-center text-white"
+          style={{
+            backgroundImage: "url('/img/ethercodeFondo2.png')",
+            backgroundAttachment: "fixed",
+            backgroundSize: "cover",
+            backgroundRepeat: "no-repeat",
+            backgroundPosition: "center",
+          }}
+        >
+          <p className="text-xl sm:text-2xl font-semibold mb-8 animate-pulse text-center px-4">
+            Preparando tu camino hacia la automatización inteligente...
+          </p>
+          <div className="w-64 bg-white/20 rounded-full h-3 overflow-hidden">
+            <div
+              className="bg-accent h-full transition-all duration-300 ease-linear"
+              style={{ width: `${progress}%` }}
+            />
+          </div>
+          <span className="mt-4 text-accent text-sm">{progress}%</span>
+        </div>
+      ) : (
+        <div
+          className="min-h-screen text-primaryText flex flex-col justify-between"
+          style={{
+            backgroundImage: "url('img/ethercodeFondo2.png')",
+            backgroundAttachment: "fixed",
+            backgroundSize: "cover",
+            backgroundRepeat: "no-repeat",
+            backgroundPosition: "center",
+          }}
+        >
+          <ChatWhatsapp />
+          <ButtonTop />
+
+          <Element name="hero">
+            <NavbarIndex links={links} />
+          </Element>
+
+          <div className="flex-grow">
+            {/* HERO GRID  */}
+            <HeroGrid />
+            <Element name="servicios">
+              <Services />
+            </Element>
+            {/* CASOS DE USO  */}
+            <Element name="useCases">
+              <UseCases />
+            </Element>
+            <LogoSlider />
+            {/* <Element name="seguridad">
+              <Seguridad />
+            </Element> */}
+            <Contact />
+            {/* <CTAFinal /> */}
+            <Element name="newsletter">{/* <Newsletter /> */}</Element>
+          </div>
+
+          <Footer />
+        </div>
+      )}
+    </>
+  );
+};
+
+export default Home;

@@ -1,0 +1,64 @@
+{
+    "Inicio": "Inicio",
+    "Agentes IA": "Agentes IA",
+    "Contacto": "Contacto",
+    "Nosotros": "Nosotros",
+    "Agentes de Inteligencia Artificial | EtherCode": "Agentes de Inteligencia Artificial | EtherCode",
+    "Creamos agentes IA para automatizar atención al cliente, ventas y procesos. EtherCode es tu agencia AIMA de confianza.": "Creamos agentes IA para automatizar atención al cliente, ventas y procesos. EtherCode es tu agencia AIMA de confianza.",
+    "Automatizá procesos, aumentá tu eficiencia y mejorá la experiencia del cliente con EtherCode.": "Automatizá procesos, aumentá tu eficiencia y mejorá la experiencia del cliente con EtherCode.",
+    "Preparando tu camino hacia la automatización inteligente...": "Preparando tu camino hacia la automatización inteligente...",
+    "Seleccioná tu idioma / Choose your language": "Seleccioná tu idioma / Choose your language",
+    "hero": {
+        "title": "Agentes de Inteligencia Artificial para Empresas Modernas",
+        "paragraph1": "Desarrollamos agentes IA que automatizan tareas, procesan datos y responden consultas en tiempo real.",
+        "paragraph2": "Soluciones inteligentes para atención al cliente, soporte interno y procesos de venta.",
+        "paragraph3": "EtherCode es tu socio estratégico en transformación digital.",
+        "cta": "Conocer más sobre los Agentes IA"
+    },
+    "services": {
+        "title": "Soluciones que ofrecemos",
+        "agentTitle": "Agentes Inteligentes",
+        "agentSubtitle": "Automatización con IA para empresas modernas",
+        "agentDescription": "Descubrí cómo los agentes inteligentes pueden ahorrar tiempo, mejorar la experiencia y hacer crecer tu negocio.",
+        "discoverMore": "Descubrir más",
+        "softwareTitle": "Software a Medida",
+        "softwareSubtitle": "Sistemas hechos a tu medida",
+        "softwareDescription": "Nuestro software se adapta a tu empresa, procesos y personas.",
+        "moreInfo": "Más info"
+      },
+    "navbar": {
+        "soluciones": "Soluciones AIMA",
+        "fabricasoft": "Fábrica de Software",
+        "solucionesHover": "Agentes de Inteligencia Artificial para Mejora Automática",
+        "fabricasoftHover": "Desarrollo a medida con tecnologías modernas y metodología flexible"
+    },
+    "contact": {
+        "inicio": "Inicio",
+        "titulo": "Solicita una Auditoría de Código",
+        "descripcion": "Completa el formulario y recibe una auditoría detallada para mejorar tu código, optimizar el rendimiento y resolver problemas técnicos.",
+        "nombre": "Nombre Completo",
+        "placeholderNombre": "Ingresa tu nombre completo",
+        "email": "Correo Electrónico",
+        "placeholderEmail": "Ingresa tu correo",
+        "telefono": "Teléfono",
+        "placeholderTelefono": "Número de teléfono",
+        "sitioWeb": "Sitio Web (opcional)",
+        "placeholderWeb": "URL del sitio web",
+        "tecnologias": "Tecnologías Utilizadas",
+        "placeholderTecnologias": "React, Node.js, etc.",
+        "pais": "País",
+        "selectPais": "Selecciona tu país",
+        "argentina": "Argentina",
+        "chile": "Chile",
+        "mexico": "México",
+        "espana": "España",
+        "otro": "Otro",
+        "detalles": "Descripción del Proyecto",
+        "placeholderDetalles": "Describe tu proyecto y qué necesitas mejorar",
+        "enviar": "Enviar Solicitud",
+        "errorCampos": "Todos los campos son obligatorios.",
+        "exitoEnvio": "¡Solicitud enviada con éxito!",
+        "errorEnvio": "Error al enviar el formulario. Por favor, inténtalo nuevamente."
+    }    
+}
+  
