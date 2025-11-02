@@ -1,16 +1,12 @@
 import { useState, useEffect, useRef } from "react";
+import { motion, useReducedMotion } from "framer-motion";
 
-// ✅ Chat limpio, cada mensaje va directo a n8n
-// ✅ Diseño glass, header degradado, sombras suaves
-// ✅ Posicionado arriba del botón de WhatsApp con offsets configurables
-// ✅ Sin opciones pre-armadas
-// ✅ Maneja "contacto" para abrir formulario (opcional)
-
+// Chat EtherCode — glass + aura, tip de contacto, consistente con el estilo del sitio
 const ChatBot = ({
   closeChat,
   showWelcomeMessage,
-  bottomOffset = 150,   // subilo/bajalo según tu botón de WhatsApp
-  rightOffset = 24,     // margen derecho
+  bottomOffset = 150, // alineado sobre la burbuja de WhatsApp
+  rightOffset = 24,
   fixed = true,
 }) => {
   const [messages, setMessages] = useState([]);
@@ -21,20 +17,18 @@ const ChatBot = ({
   const [contactData, setContactData] = useState({ name: "", email: "", telefono: "" });
   const sessionIdRef = useRef(null);
   const messagesEndRef = useRef(null);
+  const prefersReducedMotion = useReducedMotion();
 
-  // Auto-scroll al final
+  // === Helpers ===
   const scrollToBottom = () => messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   useEffect(() => { scrollToBottom(); }, [messages, isTyping]);
 
-  // sessionId persistente por visitante
   useEffect(() => {
-    let sid = null;
-    if (typeof window !== "undefined") {
-      sid = window.localStorage.getItem("ethercode_chat_sid");
-      if (!sid) {
-        sid = (crypto?.randomUUID?.() || String(Date.now()));
-        window.localStorage.setItem("ethercode_chat_sid", sid);
-      }
+    if (typeof window === "undefined") return;
+    let sid = window.localStorage.getItem("ethercode_chat_sid");
+    if (!sid) {
+      sid = (crypto?.randomUUID?.() || String(Date.now()));
+      window.localStorage.setItem("ethercode_chat_sid", sid);
     }
     sessionIdRef.current = sid;
   }, []);
@@ -46,14 +40,18 @@ const ChatBot = ({
       setTimeout(() => {
         setMessages((m) => [
           ...m,
-          { sender: "bot", text: "¡Hola! Soy Ali, tu asistente de EtherCode. Contame en qué te ayudo y te respondo al toque." },
+          {
+            sender: "bot",
+            text:
+              "¡Hola! Soy Ali, tu asistente de EtherCode. Contame en qué te ayudo y te respondo al toque ⚡",
+          },
         ]);
         setIsTyping(false);
       }, 450);
     }
   }, [showWelcomeMessage]);
 
-  // Enviar al agente (n8n) por tu API
+  // Envío a n8n
   const sendToAgent = async ({ message, context }) => {
     const res = await fetch("/api/send-to-n8n", {
       method: "POST",
@@ -68,19 +66,16 @@ const ChatBot = ({
         },
       }),
     });
-    if (!res.ok) {
-      const txt = await res.text().catch(() => "");
-      throw new Error(txt || "n8n error");
-    }
+    if (!res.ok) throw new Error(await res.text().catch(() => "n8n error"));
     return res.json();
   };
 
-  // Enviar mensaje (texto)
+  // Enviar texto
   const sendMessage = async (message) => {
     const trimmed = (message || input || "").trim();
     if (!trimmed) return;
 
-    // Atajo: si el usuario escribe "contacto", abrimos form
+    // Atajo de UX
     if (trimmed.toLowerCase() === "contacto") {
       setShowContactForm(true);
       setMessages((m) => [...m, { sender: "user", text: trimmed }]);
@@ -114,7 +109,7 @@ const ChatBot = ({
     }
   };
 
-  // Form de contacto (guarda y también avisa al agente)
+  // Enviar contacto
   const handleContactSubmit = async () => {
     const { name, email, telefono } = contactData;
     if (!name || !email || !telefono) {
@@ -125,7 +120,6 @@ const ChatBot = ({
     setErrorBar("");
 
     try {
-      // Aviso al agente: lead capture (tu flujo en n8n decide qué hacer)
       await sendToAgent({
         message: `LEAD_CAPTURE|name:${name}|email:${email}|phone:${telefono}`,
         context: "chatbot_contact_form",
@@ -150,7 +144,7 @@ const ChatBot = ({
     }
   };
 
-  // Posición fija con offsets y safe-area para iOS
+  // Posición
   const wrapperClass = fixed ? "fixed z-[99999]" : "";
   const wrapperStyle = fixed
     ? {
@@ -161,27 +155,45 @@ const ChatBot = ({
 
   return (
     <div className={wrapperClass} style={wrapperStyle}>
-      {/* Card principal */}
-      <div className="w-[92vw] max-w-[380px] h-[560px] sm:w-[360px] sm:max-w-none sm:h-[580px]
-                      rounded-2xl border border-white/30 bg-white/80 backdrop-blur-xl
-                      shadow-[0_20px_60px_rgba(0,0,0,0.25)] flex flex-col overflow-hidden">
+      {/* Aura conic (match sitio) */}
+      <div
+        aria-hidden
+        className="absolute -inset-6 -z-10 rounded-[1.5rem] blur-2xl opacity-30"
+        style={{
+          background:
+            "conic-gradient(from 90deg at 50% 50%, rgba(0,245,212,.28), rgba(199,125,255,.18), rgba(10,17,40,.0))",
+        }}
+      />
 
+      {/* Card principal */}
+      <motion.div
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: prefersReducedMotion ? 0 : 0.3 }}
+        className="w-[92vw] max-w-[380px] h-[560px] sm:w-[360px] sm:max-w-none sm:h-[580px]
+                   rounded-2xl border border-white/15 bg-white/10 backdrop-blur-xl
+                   shadow-[0_20px_60px_rgba(0,0,0,0.35)] flex flex-col overflow-hidden"
+      >
         {/* Header */}
-        <div className="relative bg-gradient-to-r from-indigo-500 to-blue-600 text-white py-3 pl-4 pr-3">
+        <div className="relative bg-gradient-to-r from-[#00B4D8] via-[#00B4E7] to-[#C77DFF] text-white py-3 pl-4 pr-3">
           <div className="flex items-center justify-between">
-            <div className="font-semibold tracking-wide">Altibot</div>
+            <div className="font-semibold tracking-wide flex items-center gap-2">
+              <span className="inline-block w-2 h-2 rounded-full bg-emerald-300 animate-pulse" />
+              Ali • Asistente EtherCode
+            </div>
             <button
               onClick={closeChat}
-              className="inline-flex items-center justify-center w-8 h-8 rounded-full hover:bg-white/20 transition"
-              aria-label="Cerrar"
+              className="inline-flex items-center justify-center w-8 h-8 rounded-full hover:bg-white/15 transition"
+              aria-label="Cerrar chat"
+              title="Cerrar"
             >
               ✕
             </button>
           </div>
-          <div className="text-white/80 text-xs mt-0.5">Asistente de EtherCode</div>
+          <div className="text-white/90 text-[11px] mt-0.5">Responde en segundos • 24/7</div>
         </div>
 
-        {/* Barra de error (si la hay) */}
+        {/* Error bar */}
         {errorBar && (
           <div className="bg-red-50 text-red-700 text-xs px-3 py-2 border-b border-red-100">
             {errorBar}
@@ -203,41 +215,41 @@ const ChatBot = ({
           <div ref={messagesEndRef} />
         </div>
 
-        {/* Form de contacto (opcional) */}
+        {/* Contact form / Input */}
         {showContactForm ? (
-          <div className="border-t border-gray-200 bg-white px-3 py-3">
+          <div className="border-t border-white/10 bg-white/5 px-3 py-3 backdrop-blur-sm">
             <div className="grid grid-cols-1 gap-2">
               <input
                 type="text"
                 placeholder="Nombre"
                 value={contactData.name}
                 onChange={(e) => setContactData({ ...contactData, name: e.target.value })}
-                className="p-2 rounded-xl border border-gray-300 focus:outline-none focus:border-blue-400"
+                className="p-2 rounded-xl bg-white/90 text-black border border-white/40 focus:outline-none focus:ring-2 focus:ring-[#00B4D8]"
               />
               <input
                 type="email"
                 placeholder="Correo electrónico"
                 value={contactData.email}
                 onChange={(e) => setContactData({ ...contactData, email: e.target.value })}
-                className="p-2 rounded-xl border border-gray-300 focus:outline-none focus:border-blue-400"
+                className="p-2 rounded-xl bg-white/90 text-black border border-white/40 focus:outline-none focus:ring-2 focus:ring-[#00B4D8]"
               />
               <input
                 type="tel"
                 placeholder="Teléfono"
                 value={contactData.telefono}
                 onChange={(e) => setContactData({ ...contactData, telefono: e.target.value })}
-                className="p-2 rounded-xl border border-gray-300 focus:outline-none focus:border-blue-400"
+                className="p-2 rounded-xl bg-white/90 text-black border border-white/40 focus:outline-none focus:ring-2 focus:ring-[#00B4D8]"
               />
               <div className="flex gap-2">
                 <button
                   onClick={handleContactSubmit}
-                  className="flex-1 px-3 py-2 rounded-xl bg-blue-600 text-white hover:bg-blue-700 transition"
+                  className="flex-1 px-3 py-2 rounded-xl bg-gradient-to-r from-[#00B4D8] to-[#00B4E7] text-black font-semibold hover:opacity-95 transition"
                 >
                   Enviar
                 </button>
                 <button
                   onClick={() => setShowContactForm(false)}
-                  className="px-3 py-2 rounded-xl bg-gray-100 text-gray-700 hover:bg-gray-200 transition"
+                  className="px-3 py-2 rounded-xl bg-white/80 text-black hover:bg-white transition"
                 >
                   Cancelar
                 </button>
@@ -245,8 +257,7 @@ const ChatBot = ({
             </div>
           </div>
         ) : (
-          // Input principal
-          <div className="border-t border-gray-200 bg-white px-3 py-3">
+          <div className="border-t border-white/10 bg-white/5 px-3 py-3 backdrop-blur-sm">
             <div className="flex items-center gap-2">
               <input
                 type="text"
@@ -254,25 +265,27 @@ const ChatBot = ({
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && sendMessage()}
                 placeholder="Escribí tu consulta…"
-                className="flex-1 p-2 rounded-xl border border-gray-300 focus:outline-none focus:border-blue-400"
+                className="flex-1 p-2 rounded-xl bg-white/90 text-black border border-white/40 focus:outline-none focus:ring-2 focus:ring-[#00B4D8]"
               />
               <button
                 onClick={() => sendMessage()}
-                className="inline-flex items-center justify-center w-11 h-11 rounded-xl bg-blue-600 text-white hover:bg-blue-700 transition"
+                className="inline-flex items-center justify-center w-11 h-11 rounded-xl
+                           bg-gradient-to-br from-[#00B4D8] to-[#00B4E7] text-black font-semibold hover:opacity-95 transition"
                 aria-label="Enviar"
+                title="Enviar"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none"
-                  viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5"
+                  viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14M12 5l7 7-7 7" />
                 </svg>
               </button>
             </div>
-            <div className="mt-2 text-[11px] text-gray-500">
-              Tip: escribí <span className="font-semibold">contacto</span> para dejarnos tus datos.
+            <div className="mt-2 text-[11px] text-white/80">
+              Tip: escribí <span className="font-semibold">contacto</span> y te pedimos tus datos para asistirte.
             </div>
           </div>
         )}
-      </div>
+      </motion.div>
     </div>
   );
 };
@@ -284,8 +297,8 @@ function MessageBubble({ sender, children }) {
       <div
         className={`max-w-[78%] rounded-2xl px-3 py-2 leading-relaxed text-sm shadow-sm
         ${isUser
-          ? "bg-gradient-to-br from-blue-600 to-indigo-600 text-white"
-          : "bg-gray-100 text-gray-800 border border-gray-200"}`}
+          ? "bg-gradient-to-br from-[#00B4D8] to-[#00B4E7] text-black font-medium"
+          : "bg-white/90 text-gray-900 border border-white/50"}`}
       >
         {children}
       </div>
