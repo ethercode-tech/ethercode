@@ -15,7 +15,7 @@ class MyDocument extends Document {
           <meta name="google-adsense-account" content="ca-pub-6961079452828782"></meta>
 
           {/* Favicon y Apple Icons */}
-          <link rel="icon" href="/img-logo/EtherCode.ico" />
+          <link rel="icon" href="/img-logo/ethercode-isotipo-turquoise-hd.ico" />
           <link rel="apple-touch-icon" href="/img-logo/EtherCodeSlogan.png" />
           {/* <link rel="manifest" href="/site.webmanifest" /> */}
 

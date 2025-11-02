@@ -13,7 +13,7 @@ const Legal = () => {
           content="Legal information from EtherCode, including rights, responsibilities, and regulations for using our services in Jujuy and Argentina."
         />
         <meta name="robots" content="noindex, nofollow" />
-        <link rel="icon" href="/img-logo/EtherCode.ico" />
+        <link rel="icon" href="/img-logo/ethercode-isotipo-turquoise-hd.ico" />
         <link rel="canonical" href="https://www.ethercode.com.ar/legal" />
       </Head>
 

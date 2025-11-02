@@ -40,7 +40,7 @@ const Navbar = () => {
                 <span className="inline-flex items-center gap-2 text-2xl font-medium text-gray-200 dark:text-gray-100 leading-none">
                   {/* Misma dimensión para dark/light, sin clases de width adicionales */}
                   <Image
-                    src="/img-logo/logo-ethercode--sinfondo-blanco.png"
+                    src="/img-logo/ethercode-isotipo-white-256.png"
                     alt="EtherCode"
                     width={40}
                     height={40}
@@ -48,7 +48,7 @@ const Navbar = () => {
                     priority
                   />
                   <Image
-                    src="/img-logo/logo-ethercode-sin-fondo-negro.png"
+                    src="/img-logo/ethercode-isotipo-black-1024.png"
                     alt="EtherCode"
                     width={40}
                     height={40}
@@ -104,7 +104,7 @@ const Navbar = () => {
                 <Link
                   href="/kitInicialDigital"
                   id="cta-kit"
-                  className="rounded-xl px-5 py-2 text-base font-semibold text-black shadow-lg transition-colors bg-gradient-to-r from--[#00B4D8] to--[#00B4E7] hover:from-yellow-500 hover:to-yellow-700"
+                  className="rounded-xl px-5 py-2 text-base font-semibold text-black shadow-lg transition-colors bg-gradient-to-r from-[#00B4D8] to-[#00B4E7] hover:from-blue-500 hover:to-blue-700"
                 >
                   🚀 Conoce nuestro Kit Inicial Digital
                 </Link>
@@ -132,7 +132,7 @@ const Navbar = () => {
                 <Link
                   href="/kitInicialDigital"
                   id="cta-kit"
-                  className="rounded-xl bg-gradient-to-r from--[#00B4D8] to--[#00B4E7] px-4 py-2 font-bold text-black shadow-lg transition hover:from-yellow-500 hover:to-yellow-700"
+                  className="rounded-xl bg-gradient-to-r from-[#00B4D8] to-[#00B4E7] px-4 py-2 font-bold text-black shadow-lg transition hover:from-blue-500 hover:to-blue-700"
                   onClick={toggleMobileDropdown}
                 >
                   🚀 Conoce nuestro Kit Inicial Digital

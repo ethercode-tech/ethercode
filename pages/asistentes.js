@@ -77,7 +77,7 @@ const PageEmpleadosDigitales = () => {
           rel="canonical"
           href="https://www.ethercode.com.ar/asistentes"
         />
-        <link rel="icon" href="/img-logo/EtherCode.ico" />
+        <link rel="icon" href="/img-logo/ethercode-isotipo-turquoise-hd.ico" />
 
         <meta name="robots" content="index, follow" />
         <meta name="author" content="EtherCode" />

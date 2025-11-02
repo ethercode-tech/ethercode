@@ -1,47 +1,138 @@
-// ✅ CTA FINAL REESCRITA – ENFOQUE TOTAL EN EMPLEADO DIGITAL, EN LÍNEA CON EL RESTO DE LA PÁGINA
-
+"use client";
 import { motion } from "framer-motion";
 
 export default function CTAFinal() {
   return (
-    <section className="py-16 px-6 sm:px-10 md:px-20 lg:px-32 xl:px-48 text-white bg-gradient-to-b from-transparent to-black relative overflow-hidden">
-      {/* Fondo con patrón sutil */}
-      <div className="absolute inset-0 bg-[radial-gradient(#3f3f3f_1px,transparent_1px)] [background-size:20px_20px] opacity-10 pointer-events-none" />
+    <section
+      id="cta-final"
+      className="relative overflow-hidden text-white py-20 px-6 sm:px-10 md:px-20"
+      style={{
+        ["--sec-mask-strength"]: 0.5,
+        ["--sec-alpha"]: 0.06,
+      }}
+      aria-labelledby="cta-title"
+    >
+      {/* BACKGROUND FX (sin imágenes) */}
+      <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
+        {/* grilla sutil */}
+        <div className="absolute inset-0 opacity-[0.06] [background-image:linear-gradient(var(--tw-gradient-stops))] from-white via-white to-white [mask-image:radial-gradient(60%_60%_at_50%_40%,_black,_transparent)]" />
+        {/* blob cónico principal */}
+        <div className="absolute -top-[35vmin] left-1/2 -translate-x-1/2 h-[95vmax] w-[95vmax] rounded-full blur-3xl opacity-30 bg-[conic-gradient(at_top_right,_theme(colors.cyan.400),_theme(colors.fuchsia.500),_theme(colors.indigo.500),_theme(colors.cyan.400))] animate-[pulse_7s_ease-in-out_infinite]" />
+        {/* apoyo radial */}
+        <div className="absolute bottom-[-25vmax] right-[-10vmax] h-[60vmax] w-[60vmax] rounded-full blur-3xl opacity-25 bg-[radial-gradient(circle_at_30%_30%,_rgba(0,245,212,.22),_rgba(199,125,255,.14),_transparent_60%)]" />
+        {/* overlay de lectura */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "radial-gradient(70% 60% at 50% 30%, rgba(10,17,40, var(--sec-alpha)), rgba(10,17,40, calc(var(--sec-alpha) + 0.02)) 60%, transparent 100%)",
+            WebkitMaskImage:
+              "radial-gradient(60% 60% at 50% 40%, rgba(0,0,0,var(--sec-mask-strength)), transparent)",
+            maskImage:
+              "radial-gradient(60% 60% at 50% 40%, rgba(0,0,0,var(--sec-mask-strength)), transparent)",
+          }}
+        />
+      </div>
 
-      <div className="max-w-3xl mx-auto text-center relative z-10">
-        {/* Título */}
-        <motion.h2
-          initial={{ opacity: 0, y: -20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          viewport={{ once: true }}
-          className="text-3xl sm:text-4xl font-bold mb-6 drop-shadow-sm"
-        >
-          📣 Conocé a tu próximo empleado digital
-        </motion.h2>
+      <div className="relative max-w-4xl mx-auto text-center z-0">
+        {/* Halo conic suave en el bloque */}
+        <div className="relative rounded-[2rem] p-1">
+          <span className="pointer-events-none absolute inset-0 rounded-[2rem] opacity-30 blur-md -z-10 [background:conic-gradient(from_120deg_at_50%_50%,_#22d3ee55,_#e879f955,_#6366f155,_#22d3ee55)]" />
 
-        {/* Subtítulo */}
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          viewport={{ once: true }}
-          className="text-lg sm:text-xl text-gray-300 mb-10 leading-relaxed"
-        >
-          Atendé día y noche. Vendé sin pausas. Automatizá sin complicaciones. Tu nuevo empleado digital no duerme, no se cansa y no falla.
-        </motion.p>
+          {/* Título */}
+          <motion.h2
+            id="cta-title"
+            initial={{ opacity: 0, y: -18 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.4 }}
+            transition={{ duration: 0.55, ease: "easeOut" }}
+            className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-fuchsia-300 to-indigo-300 drop-shadow mb-4"
+          >
+            Conocé a tu próximo <span className="whitespace-nowrap">empleado digital</span>
+          </motion.h2>
 
-        {/* Botón */}
-        <motion.a
-          href="https://cal.com/ethercode-software/contanos-tu-idea"
-          target="_blank"
-          rel="noopener noreferrer"
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          className="inline-block bg-gradient-to-r from--[#00B4D8] to--[#00B4E7] hover:from-yellow-500 hover:to-yellow-700 text-black font-bold text-lg py-3 px-8 rounded-full shadow-xl transition-all duration-300"
-        >
-          📅 Agendar reunión ahora
-        </motion.a>
+          {/* Subtítulo */}
+          <motion.p
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.4 }}
+            transition={{ delay: 0.1, duration: 0.5 }}
+            className="text-white/80 text-lg sm:text-xl max-w-3xl mx-auto"
+          >
+            Atendé día y noche. Vendé sin pausas. Automatizá sin complicaciones.
+            <br className="hidden sm:block" />
+            <span className="text-white">No duerme, no se cansa y no falla.</span>
+          </motion.p>
+
+          {/* Micro-badges de confianza */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.4 }}
+            transition={{ delay: 0.2, duration: 0.5 }}
+            className="mt-6 flex flex-wrap items-center justify-center gap-2 text-[12px] text-white/75"
+          >
+            {["Onboarding en días", "Integración WhatsApp/Web/IG", "Logs y auditoría", "Fallback humano"].map((b) => (
+              <span key={b} className="rounded-full border border-white/10 bg-white/5 px-3 py-1">
+                {b}
+              </span>
+            ))}
+          </motion.div>
+
+          {/* Línea pulsante */}
+          <motion.div
+            initial={{ opacity: 0, y: -6 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.4 }}
+            transition={{ delay: 0.3, duration: 0.6 }}
+            className="w-[200px] h-[2px] mx-auto mt-8 bg-gradient-to-r from-cyan-400 via-fuchsia-400 to-indigo-500 animate-pulse rounded-full shadow"
+          />
+
+          {/* Doble CTA */}
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.4 }}
+            transition={{ delay: 0.35, duration: 0.6 }}
+            className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3"
+          >
+            <a
+              href="https://cal.com/ether-code/contanos-tu-idea"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="relative inline-flex items-center justify-center rounded-2xl px-7 py-3.5 min-h-[48px]
+                         text-black font-bold bg-gradient-to-r from-cyan-300 to-indigo-300
+                         shadow-xl transition will-change-transform
+                         hover:from-cyan-200 hover:to-indigo-200 active:scale-[0.99]"
+              aria-label="Agendar reunión"
+            >
+              <span className="absolute inset-0 rounded-2xl -z-10 opacity-30 blur-md [background:conic-gradient(from_0deg_at_50%_50%,_#22d3ee55,_#e879f955,_#6366f155,_#22d3ee55)]" />
+              📅 Agendar reunión ahora
+            </a>
+
+            <a
+              href="#contacto"
+              className="relative inline-flex items-center justify-center rounded-2xl px-7 py-3.5 min-h=[48px]
+                         text-white bg-white/10 backdrop-blur-md border border-white/20 ring-1 ring-white/10
+                         shadow-lg shadow-black/10 transition will-change-transform
+                         hover:bg-white/20 hover:shadow-xl hover:ring-white/30 active:scale-[0.99]"
+              aria-label="Hablar con nosotros"
+            >
+              🗣️ Hablar con nosotros
+            </a>
+          </motion.div>
+
+          {/* Objeción desactivada (privacidad/compromiso) */}
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true, amount: 0.4 }}
+            transition={{ delay: 0.5, duration: 0.6 }}
+            className="mt-5 text-sm text-white/70"
+          >
+            Sin compromiso. Te mostramos cómo funciona con tus propios casos.
+          </motion.p>
+        </div>
       </div>
     </section>
   );

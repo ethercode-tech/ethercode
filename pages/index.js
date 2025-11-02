@@ -118,7 +118,7 @@ const Home = () => {
 
         <meta name="robots" content="index, follow" />
         <meta name="author" content="EtherCode" />
-        <link rel="icon" href="/img-logo/logo-ethercode-sin-fondo-negro.ico" />
+        <link rel="icon" href="/img-logo/ethercode-isotipo-turquoise-hd.ico" />
         <link rel="canonical" href="https://www.ethercode.com.ar" />
 
         {/* Preguntas SEO estilo LLM */}

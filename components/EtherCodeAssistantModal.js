@@ -128,7 +128,7 @@ export default function EtherCodeAssistantModal({
                       shadow-[0_30px_100px_rgba(0,0,0,0.55)] border border-white/10
                       bg-neutral-950/90 text-neutral-100 flex flex-col">
         {/* Header */}
-        <div className="flex items-center justify-between px-5 py-3 bg-gradient-to-r from--[#00B4E7] to-yellow-700 text-white">
+        <div className="flex items-center justify-between px-5 py-3 bg-gradient-to-r from-[#00B4E7] to-blue-700 text-white">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-lg bg-white/20 grid place-items-center">🤖</div>
             <div>
@@ -179,7 +179,7 @@ export default function EtherCodeAssistantModal({
                 <button
                   onClick={handleSend}
                   className="shrink-0 inline-flex items-center justify-center gap-2 px-3 py-2 rounded-xl
-                             bg--[#00B4E7] text-white hover:bg-yellow-700 transition shadow"
+                             bg--[#00B4E7] text-white hover:bg-blue-700 transition shadow"
                   aria-label="Enviar"
                 >
                   Enviar

@@ -95,7 +95,7 @@ const PageAsistentesIA = () => {
         />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:image" content="/img-logo/EtherCodeSlogan.png" />
-        <link rel="icon" href="/img-logo/EtherCode.ico" />
+        <link rel="icon" href="/img-logo/ethercode-isotipo-turquoise-hd.ico" />
         <link
           rel="canonical"
           href="https://www.ethercode.com.ar/asistentes-inteligentes"

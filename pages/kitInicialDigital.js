@@ -47,7 +47,7 @@ const PageKitInicial = () => {
 
         {/* Canonical */}
         <link rel="canonical" href="https://www.ethercode.com.ar/kitInicialDigital" />
-        <link rel="icon" href="/img-logo/EtherCode.ico" />
+        <link rel="icon" href="/img-logo/ethercode-isotipo-turquoise-hd.ico" />
 
         {/* Structured Data JSON-LD */}
         <script type="application/ld+json" dangerouslySetInnerHTML={{

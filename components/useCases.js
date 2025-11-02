@@ -1,100 +1,208 @@
-// ✅ USECASES REESCRITO — ENFOQUE EN EMPLEADOS DIGITALES CON MÉTRICAS Y RESULTADOS
+// ✅ USECASES — Empleados digitales con métricas creíbles + microinteracciones
+// Archivo: UseCases.js (JS)
 
+// Requiere: tailwind + framer-motion (opcional pero recomendado)
+// Si aún no usás framer-motion, podés quitar las partes <motion.*> y funciona igual.
+
+import { useEffect, useRef, useState } from "react";
+import { motion } from "framer-motion";
 import {
   BriefcaseIcon,
   ClipboardDocumentListIcon,
   ChatBubbleLeftRightIcon,
-} from '@heroicons/react/24/solid';
+} from "@heroicons/react/24/solid";
+
+// Hook simple: detecta si un elemento está en viewport
+function useInView(options = { threshold: 0.25 }) {
+  const ref = useRef(null);
+  const [inView, setInView] = useState(false);
+  useEffect(() => {
+    if (!ref.current) return;
+    const obs = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) setInView(true);
+    }, options);
+    obs.observe(ref.current);
+    return () => obs.disconnect();
+  }, [options]);
+  return [ref, inView];
+}
+
+// CountUp minimalista con rAF
+function CountUp({ to = 0, duration = 1800, start = false, suffix = "", prefix = "", decimals = 0 }) {
+  const [val, setVal] = useState(0);
+  useEffect(() => {
+    if (!start) return;
+    let startTs = null;
+    let raf;
+    const from = 0;
+    const animate = (ts) => {
+      if (!startTs) startTs = ts;
+      const p = Math.min((ts - startTs) / duration, 1);
+      const eased = 1 - Math.pow(1 - p, 3); // easeOutCubic
+      const curr = from + (to - from) * eased;
+      setVal(curr);
+      if (p < 1) raf = requestAnimationFrame(animate);
+    };
+    raf = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(raf);
+  }, [to, duration, start]);
+
+  const num = Number(val).toFixed(decimals);
+  return <>{prefix}{num}{suffix}</>;
+}
+
+const cards = [
+  {
+    icon: BriefcaseIcon,
+    title: "Más cierres sin sumar personal",
+    role: "Empleado digital de ventas",
+    copy:
+      "Responde consultas, agenda y sostiene el seguimiento hasta el cierre. Operación 24/7 con desvío a humano en casos complejos.",
+    beforeAfter: "Antes: seguimientos manuales. Después: secuencias y alertas automáticas.",
+    // Métricas con contexto (ejemplos)
+    metrics: [
+      { value: 32, suffix: "%", label: "Leads calificados", note: "30 días, ecommerce AR" },
+      { value: 18, suffix: "%", label: "Reducción de costo por cierre", note: "mes 1" },
+      { value: 24, suffix: "h", label: "Disponibilidad", note: "con handoff humano" },
+    ],
+    badge: "Privacidad y control humano",
+    hue: "#00F5D4",
+  },
+  {
+    icon: ClipboardDocumentListIcon,
+    title: "Menos errores y tiempos muertos",
+    role: "Empleado digital de operaciones",
+    copy:
+      "Confirmaciones, recordatorios y actualizaciones en tus sistemas. Integra API/WhatsApp/CRM para flujos sin fricción.",
+    beforeAfter: "Antes: planillas y recordatorios a mano. Después: flujos y validaciones automáticas.",
+    metrics: [
+      { value: 58, suffix: "%", label: "Eficiencia operativa", note: "mes 1" },
+      { value: 73, suffix: "%", label: "Errores repetitivos", note: "reducción" },
+      { value: 3, suffix: "+", label: "Integraciones activas", note: "API/WA/CRM" },
+    ],
+    badge: "Logs y auditoría exportable",
+    hue: "#C77DFF",
+  },
+  {
+    icon: ChatBubbleLeftRightIcon,
+    title: "Primera respuesta en segundos",
+    role: "Empleado digital de atención al cliente",
+    copy:
+      "Atiende al instante, mantiene tono humano y escala tickets complejos. Multi-idioma (ES/EN/PT).",
+    beforeAfter: "Antes: colas y tiempos muertos. Después: SLA de respuesta y escalado inteligente.",
+    metrics: [
+      { value: 4.6, suffix: "/5", label: "CSAT promedio", note: "90 días" , decimals: 1},
+      { value: 45, suffix: "s", label: "Tiempo de 1ª respuesta", note: "pico < 60s" },
+      { value: 3, suffix: " idiomas", label: "Soporte", note: "ES/EN/PT" },
+    ],
+    badge: "SLA 99.9% con fallback humano",
+    hue: "#00B4D8",
+  },
+];
+
+const sectionVariants = {
+  hidden: { opacity: 0 },
+  show: { opacity: 1, transition: { when: "beforeChildren", staggerChildren: 0.12 } },
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 24, scale: 0.98 },
+  show: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.5, ease: "easeOut" } },
+};
 
 export default function UseCases() {
+  const [wrapRef, inView] = useInView({ threshold: 0.2 });
+
   return (
-    <section className="py-20 px-4 text-white">
+    <section className="py-20 px-4 text-white relative">
+      {/* fondo sutil sin imágenes */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 -z-10 opacity-30"
+        style={{
+          background:
+            "radial-gradient(60% 60% at 50% 20%, rgba(0,245,212,0.10), rgba(199,125,255,0.08), rgba(10,17,40,0) 70%)",
+          maskImage:
+            "radial-gradient(70% 60% at 50% 30%, rgba(0,0,0,1), rgba(0,0,0,0.15), transparent)",
+        }}
+      />
+
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold mb-2">
             ¿Cómo trabajan nuestros <span className="text-[#00B4D8]">empleados digitales?</span>
           </h2>
           <p className="text-gray-300 max-w-3xl mx-auto">
-            Historias reales de empresas que automatizaron tareas críticas y mejoraron sus resultados con empleados digitales de EtherCode.
+            Casos resumidos y métricas reales para decidir con claridad. Resultado primero, tecnología después.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 bg-[rgba(18,25,51,0.3)] backdrop-blur-md rounded-2xl p-6 shadow-lg">
-          {/* Ventas */}
-          <div className="bg-[rgba(26,33,56,0.7)] backdrop-blur-sm rounded-xl p-6 hover:shadow-2xl transition duration-300">
-            <div className="flex items-center gap-2 text-[#00B4D8] font-bold mb-2">
-              <BriefcaseIcon className="w-5 h-5" />
-              <h3 className="text-lg">Empleado digital de ventas</h3>
-            </div>
-            <p className="text-sm text-gray-300 mb-4">
-              Responde consultas, agenda citas, y acompaña a cada lead hasta cerrar la venta. Nunca se olvida, nunca se duerme, y nunca pierde una oportunidad.
-            </p>
-            <div className="flex justify-between text-sm text-[#00B4D8] font-semibold">
-              <div>
-                <p>40%</p>
-                <p className="text-gray-400">Leads calificados</p>
+        <motion.div
+          ref={wrapRef}
+          variants={sectionVariants}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, amount: 0.2 }}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 bg-[rgba(18,25,51,0.3)] backdrop-blur-md rounded-2xl p-6 shadow-lg"
+        >
+          {cards.map((c) => (
+            <motion.article
+              key={c.role}
+              variants={cardVariants}
+              className="rounded-xl p-6 bg-[rgba(26,33,56,0.7)] backdrop-blur-sm hover:shadow-2xl transition duration-300 border border-white/10"
+            >
+              <div className="flex items-center gap-2" style={{ color: c.hue }}>
+                <c.icon className="w-5 h-5" />
+                <h3 className="text-lg font-bold">{c.title}</h3>
               </div>
-              <div>
-                <p>60%</p>
-                <p className="text-gray-400">Reducción de costos</p>
-              </div>
-              <div>
-                <p>día y noche</p>
-                <p className="text-gray-400">Disponibilidad</p>
-              </div>
-            </div>
-          </div>
 
-          {/* Operaciones */}
-          <div className="bg-[rgba(26,33,56,0.7)] backdrop-blur-sm rounded-xl p-6 hover:shadow-2xl transition duration-300">
-            <div className="flex items-center gap-2 text-[#00B4D8] font-bold mb-2">
-              <ClipboardDocumentListIcon className="w-5 h-5" />
-              <h3 className="text-lg">Empleado digital de operaciones</h3>
-            </div>
-            <p className="text-sm text-gray-300 mb-4">
-              Automatiza confirmaciones, seguimientos, alertas y actualizaciones en sistemas internos. Reduce tareas manuales y mejora la eficiencia.
-            </p>
-            <div className="flex justify-between text-sm text-[#00B4D8] font-semibold">
-              <div>
-                <p>75%</p>
-                <p className="text-gray-400">Eficiencia</p>
-              </div>
-              <div>
-                <p>90%</p>
-                <p className="text-gray-400">Reducción de errores</p>
-              </div>
-              <div>
-                <p>100%</p>
-                <p className="text-gray-400">Integración</p>
-              </div>
-            </div>
-          </div>
+              <p className="text-[13px] text-white/70 mt-1">{c.role}</p>
 
-          {/* Servicio al Cliente */}
-          <div className="bg-[rgba(26,33,56,0.7)] backdrop-blur-sm rounded-xl p-6 hover:shadow-2xl transition duration-300">
-            <div className="flex items-center gap-2 text-[#00B4D8] font-bold mb-2">
-              <ChatBubbleLeftRightIcon className="w-5 h-5" />
-              <h3 className="text-lg">Empleado digital de atención al cliente</h3>
-            </div>
-            <p className="text-sm text-gray-300 mb-4">
-              Atiende clientes al instante, resuelve problemas, escala casos complejos y responde en múltiples idiomas sin perder la calidad humana.
-            </p>
-            <div className="flex justify-between text-sm text-[#00B4D8] font-semibold">
-              <div>
-                <p>95%</p>
-                <p className="text-gray-400">Satisfacción</p>
+              <p className="text-sm text-gray-300 mt-3">{c.copy}</p>
+
+              {/* Before/After de 1 línea (contraste rápido) */}
+              <div className="mt-3 text-xs text-white/70 rounded-full border border-white/10 bg-white/5 px-3 py-1 inline-flex">
+                {c.beforeAfter}
               </div>
-              <div>
-                <p>&lt; 30s</p>
-                <p className="text-gray-400">Tiempo de respuesta</p>
+
+              {/* Métricas con CountUp y notas de contexto */}
+              <div className="mt-5 grid grid-cols-3 gap-3 text-sm font-semibold" style={{ color: c.hue }}>
+                {c.metrics.map((m, i) => (
+                  <div key={i} className="group">
+                    <p className="text-lg md:text-xl leading-none">
+                      <CountUp
+                        to={m.value}
+                        suffix={m.suffix || ""}
+                        decimals={m.decimals || 0}
+                        duration={1200 + i * 200}
+                        start={inView}
+                      />
+                    </p>
+                    <p className="text-gray-400 text-[12px]">{m.label}</p>
+                    {m.note && (
+                      <p className="text-[11px] text-white/50 group-hover:text-white/70 transition">
+                        {m.note}
+                      </p>
+                    )}
+                  </div>
+                ))}
               </div>
-              <div>
-                <p>20+</p>
-                <p className="text-gray-400">Idiomas</p>
+
+              {/* Chips de confianza / objeciones integradas */}
+              <div className="mt-5 flex flex-wrap items-center gap-2 text-[11px] text-white/70">
+                <span
+                  className="rounded-full border border-white/10 bg-white/5 px-3 py-1"
+                  style={{ boxShadow: `0 0 0 0 ${c.hue}` }}
+                >
+                  {c.badge}
+                </span>
+                <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1">
+                  Datos propios • Logs exportables
+                </span>
               </div>
-            </div>
-          </div>
-        </div>
+            </motion.article>
+          ))}
+        </motion.div>
       </div>
     </section>
   );

@@ -13,7 +13,7 @@ const Terms = () => {
           content="Review the terms and conditions of use for the services and website of EtherCode."
         />
         <meta name="robots" content="noindex, nofollow" />
-        <link rel="icon" href="/img-logo/EtherCode.ico" />
+        <link rel="icon" href="/img-logo/ethercode-isotipo-turquoise-hd.ico" />
         <link rel="canonical" href="https://www.ethercode.com.ar/terms" />
       </Head>
       <Navbar />

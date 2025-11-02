@@ -70,7 +70,7 @@ const Newsletter = () => {
             </div>
             <button
               type="submit"
-              className="bg-gradient-to-r from--[#00B4D8] to--[#00B4E7] hover:from-yellow-500 hover:to-yellow-700 text-black font-bold py-3 px-8 rounded-lg shadow-lg transition-transform transform hover:scale-105"
+              className="bg-gradient-to-r from-[#00B4D8] to-[#00B4E7] hover:from-blue-500 hover:to-blue-700 text-black font-bold py-3 px-8 rounded-lg shadow-lg transition-transform transform hover:scale-105"
             >
               Quiero recibir ideas 🔥
             </button>
