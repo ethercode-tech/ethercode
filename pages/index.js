@@ -153,8 +153,8 @@ const Home = () => {
       {/* Botones de idioma */}
 
       {isLoading ? (
-        <div
-          className="min-h-screen flex flex-col justify-center items-center text-white"
+          <div
+          className="relative min-h-screen flex flex-col justify-center items-center text-white overflow-hidden"
           style={{
             backgroundImage: "url('/img/ethercodeFondo2.png')",
             backgroundAttachment: "fixed",
@@ -163,17 +163,65 @@ const Home = () => {
             backgroundPosition: "center",
           }}
         >
-          <p className="text-xl sm:text-2xl font-semibold mb-8 animate-pulse text-center px-4">
-            Preparando tu camino hacia la automatización inteligente...
-          </p>
-          <div className="w-64 bg-white/20 rounded-full h-3 overflow-hidden">
-            <div
-              className="bg-accent h-full transition-all duration-300 ease-linear"
-              style={{ width: `${progress}%` }}
-            />
+          {/* Capa de energía sutil */}
+          <div
+            aria-hidden
+            className="absolute inset-0 z-0 bg-[radial-gradient(circle_at_50%_20%,rgba(0,180,231,0.25),transparent_70%)]"
+          />
+        
+          {/* Capa de gradiente cuántico (movimiento leve) */}
+          <div
+            aria-hidden
+            className="absolute inset-0 animate-[pulse_8s_ease-in-out_infinite] opacity-25"
+            style={{
+              background:
+                "conic-gradient(from 180deg at 50% 50%, rgba(0,245,212,0.2), rgba(199,125,255,0.25), rgba(0,180,231,0.25), transparent 100%)",
+            }}
+          />
+        
+          {/* Contenido */}
+          <div className="relative z-10 flex flex-col items-center text-center px-6">
+            <p
+              className="text-2xl sm:text-3xl font-semibold mb-8 animate-pulse 
+                        bg-gradient-to-r from-[#00F5D4] via-[#00B4E7] to-[#C77DFF] bg-clip-text text-transparent drop-shadow-[0_0_8px_rgba(0,180,231,0.5)]"
+            >
+              Preparando tu camino hacia la automatización inteligente...
+            </p>
+        
+            {/* Barra glass con brillo dinámico */}
+            <div className="relative w-72 sm:w-80 bg-white/10 rounded-full h-3 overflow-hidden backdrop-blur-md border border-white/10 shadow-[0_0_20px_rgba(0,180,231,0.2)]">
+              <div
+                className="h-full rounded-full transition-all duration-700 ease-out bg-gradient-to-r from-[#00F5D4] via-[#00B4E7] to-[#C77DFF] animate-[flow_2s_linear_infinite]"
+                style={{
+                  width: `${progress}%`,
+                  backgroundSize: "200% auto",
+                }}
+              />
+              <style jsx>{`
+                @keyframes flow {
+                  0% {
+                    background-position: 0% 50%;
+                  }
+                  100% {
+                    background-position: 200% 50%;
+                  }
+                }
+              `}</style>
+            </div>
+        
+            {/* Porcentaje con efecto neón */}
+            <span className="mt-4 text-sm font-medium tracking-wide text-[#00F5D4] drop-shadow-[0_0_6px_rgba(0,245,212,0.6)]">
+              {progress}%
+            </span>
           </div>
-          <span className="mt-4 text-accent text-sm">{progress}%</span>
+        
+          {/* Bruma de energía en el fondo inferior */}
+          <div
+            aria-hidden
+            className="absolute bottom-0 left-0 right-0 h-[35%] bg-gradient-to-t from-[#0A1128]/80 via-[#0A1128]/0 to-transparent"
+          />
         </div>
+      
       ) : (
         <div
           className="min-h-screen text-primaryText flex flex-col justify-between"
