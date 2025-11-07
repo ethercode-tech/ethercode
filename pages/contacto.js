@@ -107,11 +107,11 @@ const Contact = () => {
                   <p className="text-white font-medium transition">hello.ethercode@gmail.com</p>
                 </div>
               </motion.a>
-              <motion.a href="https://instagram.com/ethercode_software" target="_blank" rel="noopener noreferrer" className="flex items-start gap-3 p-3 rounded-xl border border-[#2e2e2e] bg-[#1a1a1a] hover:bg-[#1e1e1e] transition" variants={staggerItem}>
+              <motion.a href="https://instagram.com/ethercode_tech" target="_blank" rel="noopener noreferrer" className="flex items-start gap-3 p-3 rounded-xl border border-[#2e2e2e] bg-[#1a1a1a] hover:bg-[#1e1e1e] transition" variants={staggerItem}>
                 <span className="text-xl text-[#6a5af9]">📷</span>
                 <div>
                   <p className="text-sm text-gray-400 mb-0.5">Instagram</p>
-                  <p className="text-white font-medium transition">@ethercode_software</p>
+                  <p className="text-white font-medium transition">@ethercode_tech</p>
                 </div>
               </motion.a>
             </motion.div>

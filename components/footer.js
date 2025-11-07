@@ -224,7 +224,7 @@ export default function Footer() {
                 <GitHubIcon size={28} />
               </motion.a>
               <motion.a
-                href="https://www.instagram.com/ethercode_software/"
+                href="https://www.instagram.com/ethercode_tech/"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Instagram"
