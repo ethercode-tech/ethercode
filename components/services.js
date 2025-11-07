@@ -17,13 +17,34 @@ const services = [
 export default function Services() {
   return (
     <section
-      className="py-24 px-6 md:px-10 text-white relative z-0 overflow-hidden"
+      className="py-24 px-6 md:px-10 text-white relative z-0"
       /* Equilibrio de esta sección (puede variar levemente por sección) */
       style={{
         ["--sec-mask-strength"]: 0.52,
         ["--sec-alpha"]: 0.05,
       }}
-    >
+    > 
+    <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
+          {/* brillo/grilla sutil */}
+          <div className="absolute inset-0 opacity-[0.06] [background-image:linear-gradient(var(--tw-gradient-stops))] from-white via-white to-white [mask-image:radial-gradient(60%_60%_at_50%_40%,_black,_transparent)]" />
+          {/* blobs cónicos animados en capas (muy suaves) */}
+          <div className="absolute -top-1/3 left-1/2 h-[95vmax] w-[95vmax] -translate-x-1/2 rounded-full blur-3xl opacity-35 bg-[conic-gradient(at_top_right,_theme(colors.cyan.400),_theme(colors.fuchsia.500),_theme(colors.indigo.500),_theme(colors.cyan.400))] animate-[pulse_6s_ease-in-out_infinite]" />
+          <div className="absolute bottom-[-25vmax] right-[-10vmax] h-[60vmax] w-[60vmax] rounded-full blur-3xl opacity-30 bg-[radial-gradient(circle_at_30%_30%,_rgba(0,245,212,.25),_rgba(199,125,255,.15),_transparent_60%)]" />
+          <div className="absolute top-[-10vmax] left-[-10vmax] h-[40vmax] w-[40vmax] rounded-full blur-3xl opacity-25 bg-[radial-gradient(circle_at_70%_30%,_rgba(99,102,241,.25),_rgba(0,245,212,.15),_transparent_60%)]" />
+
+          {/* overlay de equilibrio para lectura */}
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                "radial-gradient(70% 60% at 50% 30%, rgba(10,17,40, var(--sec-alpha)), rgba(10,17,40, calc(var(--sec-alpha) + 0.02)) 60%, transparent 100%)",
+              WebkitMaskImage:
+                "radial-gradient(60% 60% at 50% 40%, rgba(0,0,0,var(--sec-mask-strength)), transparent)",
+              maskImage:
+                "radial-gradient(60% 60% at 50% 40%, rgba(0,0,0,var(--sec-mask-strength)), transparent)",
+            }}
+          />
+        </div>
       {/* OVERLAY DE EQUILIBRIO (recorta/atenúa el fondo global) */}
       <div
         aria-hidden
@@ -37,6 +58,7 @@ export default function Services() {
             "radial-gradient(60% 60% at 50% 40%, rgba(0,0,0,var(--sec-mask-strength)), transparent)",
         }}
       />
+      
 
       <div className="max-w-7xl mx-auto">
         <motion.h2

@@ -1,6 +1,6 @@
 // pages/_app.js
 import { useEffect } from "react";
-import { ThemeProvider } from "next-themes";
+// import { ThemeProvider } from "next-themes";
 import { useRouter } from "next/router";
 import "../css/tailwind.css";
 // import "../css/stylesLoading.css";
@@ -57,11 +57,11 @@ function MyApp({ Component, pageProps }) {
         </>
       )}
 
-      <ThemeProvider attribute="class">
+      <>
         <Component {...pageProps} />
        
         
-      </ThemeProvider>
+      </>
     </>
   );
 }

@@ -9,7 +9,7 @@ import { motion } from 'framer-motion';
 export default function CTAFinal() {
   return (
     <section
-      className="relative overflow-hidden py-24 px-6 sm:px-10 md:px-20 lg:px-32 xl:px-48 text-white"
+      className="relative  py-24 px-6 sm:px-10 md:px-20 lg:px-32 xl:px-48 text-white"
       aria-labelledby="cta-final-title"
       style={{
         ['--sec-mask-strength']: 0.5,

@@ -5,10 +5,12 @@ import WebsiteJSONLD from "../components/WebsiteJSONLD";
 class MyDocument extends Document {
   render() {
     return (
-      <Html lang="es" dir="ltr" class="dark" className="dark">
+      <Html lang="es" dir="ltr" data-theme="dark" class="dark" suppressHydrationWarning>
         <Head>
           {/* Metadatos esenciales */}
           <meta charSet="UTF-8" />
+          <meta name="color-scheme" content="dark" />
+          <style>{`:root { color-scheme: dark; }`}</style>
           <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
           {/* <meta name="viewport" content="width=device-width, initial-scale=1" /> */}
           <meta name="google-site-verification" content="pwslL4ojLoF0MNCk8JLU9VnQn9VFCBdh6LPae1v_6e8" />
@@ -73,7 +75,7 @@ class MyDocument extends Document {
           />
         </Head>
 
-        <body className="dark" class="dark">
+        <body>
           <Main />
           <NextScript />
         </body>

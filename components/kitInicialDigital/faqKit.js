@@ -60,7 +60,7 @@ export default function FAQsKit() {
 
   return (
     <section
-      className="relative overflow-hidden py-20 px-6 sm:px-10 md:px-20 lg:px-32 xl:px-48 text-white"
+      className="relative  py-20 px-6 sm:px-10 md:px-20 lg:px-32 xl:px-48 text-white"
       aria-labelledby="faq-title"
       style={{
         ['--sec-mask-strength']: 0.5,

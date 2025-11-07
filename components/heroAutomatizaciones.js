@@ -67,7 +67,7 @@ export default function HeroAutomatizaciones() {
       <ChatWhatsapp />
 
       <section
-        className="relative text-white px-4 pt-20 pb-10 sm:pt-36 sm:pb-24 overflow-hidden"
+        className="relative text-white px-4 pt-20 pb-10 sm:pt-36 sm:pb-24 "
         style={{
           ["--sec-mask-strength"]: 0.55,
           ["--sec-alpha"]: 0.06,

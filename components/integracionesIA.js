@@ -50,7 +50,7 @@ export default function IntegracionesIA() {
     <section
       id="integraciones-ia"
       aria-labelledby="beneficios-ia"
-      className="relative overflow-hidden text-white py-10"
+      className="relative  text-white py-10"
       style={{
         ["--sec-mask-strength"]: 0.5,
         ["--sec-alpha"]: 0.06,

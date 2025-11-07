@@ -1,7 +1,7 @@
 import Image from "next/image";
 const NewsCardExternal = ({ news }) => {
   return (
-    <div className="max-w-sm rounded overflow-hidden shadow-lg bg-white dark:bg-gray-900 m-4">
+    <div className="max-w-sm rounded  shadow-lg bg-white dark:bg-gray-900 m-4">
 
       <Image
         className="w-full h-48 object-cover"

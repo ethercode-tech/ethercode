@@ -242,7 +242,7 @@ const Home = () => {
 
       {isLoading ? (
           <div
-          className="relative min-h-screen flex flex-col justify-center items-center text-white overflow-hidden"
+          className="relative min-h-screen flex flex-col justify-center items-center text-white "
         >
           {/* Capa de energía sutil */}
           <div
@@ -270,7 +270,7 @@ const Home = () => {
             </p>
         
             {/* Barra glass con brillo dinámico */}
-            <div className="relative w-72 sm:w-80 bg-white/10 rounded-full h-3 overflow-hidden backdrop-blur-md border border-white/10 shadow-[0_0_20px_rgba(0,180,231,0.2)]">
+            <div className="relative w-72 sm:w-80 bg-white/10 rounded-full h-3  backdrop-blur-md border border-white/10 shadow-[0_0_20px_rgba(0,180,231,0.2)]">
               <div
                 className="h-full rounded-full transition-all duration-700 ease-out bg-gradient-to-r from-[#00F5D4] via-[#00B4E7] to-[#C77DFF] animate-[flow_2s_linear_infinite]"
                 style={{

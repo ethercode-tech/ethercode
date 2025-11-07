@@ -62,7 +62,7 @@ export default function HeroGrid(){
   return (
     <AnimatePresence>
       <motion.section
-        className="relative w-full bg-transparent pt-24 sm:pt-28 pb-[calc(2.5rem+env(safe-area-inset-bottom))] min-h-[calc(100vh-4rem)] md:min-h-[calc(100vh-5rem)] overflow-hidden"
+        className="relative w-full bg-transparent pt-24 sm:pt-28 pb-[calc(2.5rem+env(safe-area-inset-bottom))] min-h-[calc(100vh-4rem)] md:min-h-[calc(100vh-5rem)]"
         initial="hidden"
         animate="show"
         variants={container}
@@ -111,7 +111,7 @@ export default function HeroGrid(){
             </h1>
 
             {/* Frase dinámica con texto degradé para “vida” */}
-            <div className="relative h-9 sm:h-10 mb-6 overflow-hidden">
+            <div className="relative h-9 sm:h-10 mb-6 ">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={phraseKey}

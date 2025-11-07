@@ -26,7 +26,7 @@ export default function HeroKitInicial() {
       <NavbarIndex/>
 
       <section
-        className="relative flex flex-col items-center justify-center text-center pt-28 pb-14 px-6 sm:px-10 md:px-20 lg:px-32 xl:px-48 max-w-6xl mx-auto overflow-hidden"
+        className="relative flex flex-col items-center justify-center text-center pt-28 pb-14 px-6 sm:px-10 md:px-20 lg:px-32 xl:px-48 max-w-6xl mx-auto "
         aria-labelledby="kit-title"
         style={{
           ['--sec-mask-strength']: 0.5,
@@ -76,7 +76,7 @@ export default function HeroKitInicial() {
         </motion.p>
 
         {/* Frase dinámica (tipo teletipo sin borrar: impacto/urgencia) */}
-        <div className="relative h-7 sm:h-8 mb-4 overflow-hidden">
+        <div className="relative h-7 sm:h-8 mb-4 ">
           <AnimatePresence mode="wait">
             <motion.div
               key={phraseKey}

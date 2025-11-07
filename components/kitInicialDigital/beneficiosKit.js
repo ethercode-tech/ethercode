@@ -78,7 +78,7 @@ const beneficios = [
 export default function BeneficiosKit() {
   return (
     <section
-      className="relative overflow-hidden py-24 px-6 sm:px-10 md:px-20 lg:px-32 text-white"
+      className="relative  py-24 px-6 sm:px-10 md:px-20 lg:px-32 text-white"
       aria-labelledby="beneficios-title"
       style={{
         ['--sec-mask-strength']: 0.5,
