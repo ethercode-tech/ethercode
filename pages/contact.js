@@ -165,7 +165,7 @@ export default function Contact() {
               </motion.a>
 
               <motion.a
-                href="mailto:ethercode@gmail.com"
+                href="mailto:hello.ethercode@gmail.com"
                 className="flex items-start gap-3 p-3 rounded-xl border border-[#2e2e2e] bg-[#1a1a1a] hover:bg-[#1e1e1e] transition"
                 variants={staggerItem}
               >
@@ -173,7 +173,7 @@ export default function Contact() {
                 <div className="min-w-0">
                   <p className="text-sm text-gray-400 mb-0.5">Email</p>
                   <p className="text-white font-medium transition break-all md:break-normal">
-                    ethercode@gmail.com
+                    hello.ethercode@gmail.com
                   </p>
                 </div>
               </motion.a>

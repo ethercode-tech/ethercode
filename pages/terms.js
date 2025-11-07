@@ -99,7 +99,7 @@ const Terms = () => {
             </h3>
             <p className="text-lg text-gray-300 mb-8">
               If you have any questions about these Terms and Conditions, please contact us at{" "}
-              <a href="mailto:ethercode@gmail.com" className="text-blue-500 hover:underline">ethercode@gmail.com</a>.
+              <a href="mailto:hello.ethercode@gmail.com" className="text-blue-500 hover:underline">hello.ethercode@gmail.com</a>.
             </p>
 
             <p className="text-lg text-gray-300">

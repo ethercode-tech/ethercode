@@ -59,7 +59,7 @@ export default async function handler(req, res) {
     if (!r.ok) {
       return res.status(502).json({ ok: false, error: `n8n ${r.status}`, n8n: n8nData });
     }
-    return res.status(200).json({ ok: true, ...n8nData });
+    return res.status(200).json(n8nData);
   } catch (e) {
     clearTimeout(to);
     return res

@@ -73,7 +73,7 @@ class MyDocument extends Document {
           />
         </Head>
 
-        <body className="bg-transparent text-white">
+        <body class="dark">
           <Main />
           <NextScript />
         </body>

@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import { motion, AnimatePresence } from "framer-motion";
 import { event } from "nextjs-google-analytics";
 import { useEffect, useMemo, useState } from "react";
-import ÉtherCodeAssistantModal from "../components/ÉtherCodeAssistantModal";
+import ÉtherCodeAssistantModal from "../components/EtherCodeAssistantModal";
 import Container from "./container";
 
 // === Animations ===

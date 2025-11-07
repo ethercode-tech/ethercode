@@ -14,7 +14,7 @@ const handler = async (req, res) => {
 
   const mailOptions = {
     from: `"Formulario Web" <noreply@ethercode.com>`,
-    to: "ethercode@gmail.com",
+    to: "hello.ethercode@gmail.com",
     subject: `Nuevo mensaje de ${nombre}`,
     ...generateEmailTemplate({ nombre, phone, detalles })
   };

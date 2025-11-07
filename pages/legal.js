@@ -67,7 +67,7 @@ const Legal = () => {
               </p>
               <p className="text-lg text-gray-300 mb-10">
                 You have the right to access, correct, or request the deletion of your data at any time. To exercise these rights, please contact us at{" "}
-                <a href="mailto:ethercode@gmail.com" className="text-blue-500 hover:underline">ethercode@gmail.com</a>.
+                <a href="mailto:hello.ethercode@gmail.com" className="text-blue-500 hover:underline">hello.ethercode@gmail.com</a>.
               </p>
 
               {/* 6 */}
@@ -80,7 +80,7 @@ const Legal = () => {
               <h2 className="text-3xl font-bold mb-6">7. Legal Contact</h2>
               <p className="text-lg text-gray-300 mb-10">
                 For any legal inquiries or further information about our policies, please contact us at{" "}
-                <a href="mailto:ethercode@gmail.com" className="text-blue-500 hover:underline">ethercode@gmail.com</a>.
+                <a href="mailto:hello.ethercode@gmail.com" className="text-blue-500 hover:underline">hello.ethercode@gmail.com</a>.
               </p>
             </div>
           </section>

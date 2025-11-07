@@ -9,9 +9,8 @@ import Services from "../components/services";
 import ChatWhatsapp from "../components/buttonWhatsapp";
 import ButtonTop from "../components/buttonTop";
 import UseCases from "../components/useCases";
-import ChatBot from "../components/chatBotButton";
 import LogoSlider from "../components/clientes/LogoSlider";
-import ÉtherCodeChat from "../components/ÉtherCodeChat";
+import ChatBotButton from "../components/chatBotButton";
 
 
 const Home = () => {
