@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
+import sendToAgentStream from '../components/chatBot'
 
 export default function ÉtherCodeAssistantModal({
   open,
