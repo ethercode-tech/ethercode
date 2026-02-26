@@ -74,7 +74,7 @@ export default function ÉtherCodeAssistantModal({
             {
               sender: "bot",
               text:
-                "Hola, soy Nexo 🧠, el asistente de ventas de ÉtherCode.\n\nPara ayudarte rápido, decime 2 cosas:\n1) ¿Cómo se llama tu negocio?\n2) ¿Qué querés automatizar primero: WhatsApp, reservas o ventas?\n\nSi querés que te contactemos, dejá tu WhatsApp o email.",
+                "Hola, soy Nexo 🧠, el asistente de ventas de ÉtherCode.\n\nPara ayudarte rápido, decime 2 cosas:\n1) ¿Cual es el rubro de tu negocio?\n2) ¿Qué querés automatizar primero: WhatsApp, reservas o ventas?\n\nSi querés que te contactemos, dejá tu WhatsApp o email.",
             },
           ]
     );
@@ -266,7 +266,7 @@ export default function ÉtherCodeAssistantModal({
       <div
         className="relative w-[94vw] max-w-3xl h-[86dvh] sm:h-[78vh] rounded-2xl overflow-hidden
                    shadow-[0_30px_100px_rgba(0,0,0,0.55)] border border-white/10
-                   bg-neutral-950/92 text-neutral-100 flex flex-col"
+                   bg-neutral-950/90 text-neutral-100 flex flex-col"
       >
         {/* Header */}
         <div className="relative px-5 py-3 text-white bg-gradient-to-r from-[#00B4D8] via-[#00B4E7] to-[#C77DFF]">
@@ -325,7 +325,7 @@ export default function ÉtherCodeAssistantModal({
 
         {/* Composer */}
         <div className="sticky bottom-0 left-0 right-0">
-          <div className="h-6 bg-gradient-to-t from-neutral-950/95 to-transparent" />
+          <div className="h-6 bg-gradient-to-t from-neutral-950/95" />
           <div className="px-4 pb-[calc(0.85rem+env(safe-area-inset-bottom))]">
             <div className="rounded-2xl border border-white/10 bg-neutral-900/85 backdrop-blur p-2 shadow-[0_10px_40px_rgba(0,0,0,0.35)]">
               <div className="flex items-end gap-2">
