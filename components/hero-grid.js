@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import { motion, AnimatePresence } from "framer-motion";
 import { event } from "nextjs-google-analytics";
 import { useEffect, useMemo, useState } from "react";
-import ÉtherCodeAssistantModal from "../components/EtherCodeAssistantModal";
+import EtherCodeAssistantModal from "../components/EtherCodeAssistantModal";
 import Container from "./container";
 
 // === Animations ===
@@ -260,7 +260,7 @@ export default function HeroGrid(){
         </Container>
 
         {/* MODAL */}
-        <ÉtherCodeAssistantModal open={isOpen} onClose={() => setIsOpen(false)} />
+        <EtherCodeAssistantModal open={isOpen} onClose={() => setIsOpen(false)} />
       </motion.section>
     </AnimatePresence>
   );

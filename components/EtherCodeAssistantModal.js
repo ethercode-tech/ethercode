@@ -1,4 +1,5 @@
 "use client";
+
 import { useEffect, useMemo, useRef, useState } from "react";
 import sendToAgentStream from "../lib/sendToAgentStream";
 import {
@@ -7,7 +8,7 @@ import {
   isLeadReady,
 } from "../lib/leadDraft";
 
-export default function ÉtherCodeAssistantModal({
+export default function EtherCodeAssistantModal({
   open,
   onClose,
   showWelcome = true,
