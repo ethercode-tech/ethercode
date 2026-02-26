@@ -95,37 +95,67 @@ export default function ÉtherCodeAssistantModal({
   async function handleSend() {
     const text = input.trim();
     if (!text || isTyping) return;
-
+  
     setMessages((m) => [...m, { sender: "user", text }]);
     setInput("");
     setIsTyping(true);
     setErrorBar("");
-
+  
+    // bubble vacío del bot para ir completando
+    setMessages((m) => [...m, { sender: "bot", text: "" }]);
+  
     try {
-      const context = messages[messages.length - 1]?.text || "";
-      const data = await sendToAgent({ message: text, context });
-      const reply =
-        data?.reply ||
-        "No pude procesarlo justo ahora. Si querés, dejame tu contacto y te escribimos a la brevedad.";
-      const bookingUrl = data?.booking_url || null;
-
-      setMessages((m) => [
-        ...m,
-        { sender: "bot", text: reply, booking_url: bookingUrl },
-      ]);
+      const { reader, decoder } = await sendToAgentStream({ message: text });
+  
+      let reply = "";
+      let buffer = "";
+  
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+  
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split("\n");
+        buffer = lines.pop() || "";
+  
+        for (const line of lines) {
+          const t = line.trim();
+          if (!t) continue;
+  
+          if (t.startsWith("data:")) {
+            const payload = t.slice(5).trim();
+            if (!payload || payload === "[DONE]") continue;
+  
+            let chunk = "";
+            try {
+              const obj = JSON.parse(payload);
+              chunk = obj?.response || "";
+            } catch {
+              chunk = payload;
+            }
+  
+            if (chunk) {
+              reply += chunk;
+              setMessages((m) => {
+                const updated = [...m];
+                updated[updated.length - 1] = { sender: "bot", text: reply };
+                return updated;
+              });
+            }
+          }
+        }
+      }
     } catch (e) {
       console.error(e);
-      setMessages((m) => [
-        ...m,
-        {
+      setMessages((m) => {
+        const updated = [...m];
+        updated[updated.length - 1] = {
           sender: "bot",
-          text:
-            "Tuvimos un problema al procesar tu consulta. Probá otra vez en unos segundos.",
-        },
-      ]);
-      setErrorBar(
-        "No pude conectar con el asistente. Revisá /api/send-to-n8n o el webhook."
-      );
+          text: "Tuvimos un problema al procesar tu consulta. Probá otra vez en unos segundos.",
+        };
+        return updated;
+      });
+      setErrorBar(e?.message || "No pude conectar con el asistente.");
     } finally {
       setIsTyping(false);
     }

@@ -19,7 +19,7 @@ const Terms = () => {
       <Navbar />
       <Container>
         <div className="flex flex-col pt-32">
-          <section className="dark:bg-gray-900 flex-grow overflow-y-auto">
+          <section className="dark:bg-gray-900">
             <h2 className="text-3xl font-bold text-center text-blue-600 dark:text-blue-400 mb-6">
               Terms and Conditions
             </h2>

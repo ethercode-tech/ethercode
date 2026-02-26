@@ -1,10 +1,21 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/router'; // Para redireccionar
 import adsImg from '../public/auditoriaSoftwarePopup.jpeg';
 
 const Popup = ({ showPopup, setShowPopup, onAuditClick }) => {
   const router = useRouter(); // Inicializa router para la redirección
+
+  useEffect(() => {
+    if (!showPopup) return;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    return () => {
+      document.body.style.overflow = previousOverflow || '';
+    };
+  }, [showPopup]);
 
   if (!showPopup) return null;
 
@@ -14,8 +25,8 @@ const Popup = ({ showPopup, setShowPopup, onAuditClick }) => {
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-70 z-50 overflow-y-auto">
-      <div className="relative p-6 bg-gray-800 rounded-lg shadow-xl w-11/12 sm:w-3/4 lg:w-2/3 max-h-full overflow-y-auto flex flex-col md:flex-row md:space-x-4">
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-70 z-50">
+      <div className="relative p-6 bg-gray-800 rounded-lg shadow-xl w-11/12 sm:w-3/4 lg:w-2/3 max-h-[90vh] overflow-y-auto flex flex-col md:flex-row md:space-x-4">
         
         {/* Botón de cerrar */}
         <button

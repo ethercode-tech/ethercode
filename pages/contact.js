@@ -1,5 +1,6 @@
 'use client'
 import React, { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import { sendContactForm } from "../lib/api";
 import { motion, useInView } from "framer-motion";
 import { ToastContainer, toast } from "react-toastify";
@@ -33,6 +34,8 @@ const SUGERENCIAS = [
 const MAX_DETALLES = 400;
 
 export default function Contact() {
+  const router = useRouter();
+
   const initState = { nombre: "", phone: "", detalles: "" };
 
   const [values, setValues] = useState(initState);
@@ -72,7 +75,6 @@ export default function Contact() {
       return false;
     }
     if (honey) {
-      // Bot detectado
       toast.error("Error al enviar el mensaje.");
       return false;
     }
@@ -82,17 +84,29 @@ export default function Contact() {
   const onSubmit = async () => {
     if (!validateForm() || sending) return;
     setSending(true);
+
     try {
-      const res = await sendContactForm(values);
-      if (res?.ok || res?.status === 200) {
+      const res = await sendContactForm({ ...values, _gotcha: honey });
+
+      if (res?.ok) {
         toast.success("¡Mensaje enviado! Te respondemos a la brevedad.");
         setValues(initState);
-      } else {
-        throw new Error("No se pudo enviar el mensaje.");
+        setHoney("");
+
+        // Redirect a Gracias
+        router.push("/gracias");
+        return;
       }
+
+      let msg = "No pudimos enviar tu mensaje. Probá nuevamente.";
+      try {
+        const data = await res.json();
+        if (data?.errors?.length) msg = data.errors[0].message || msg;
+      } catch {}
+      throw new Error(msg);
     } catch (error) {
       console.error(error);
-      toast.error("No pudimos enviar tu mensaje. Probá nuevamente.");
+      toast.error(error?.message || "No pudimos enviar tu mensaje. Probá nuevamente.");
     } finally {
       setSending(false);
     }
@@ -111,13 +125,12 @@ export default function Contact() {
       <section
         ref={ref}
         className="relative py-24 px-4 sm:px-6 lg:px-8"
-        // Equilibrio visual del fondo compartido (overlay por sección)
         style={{
           ["--sec-mask-strength"]: 0.55,
           ["--sec-alpha"]: 0.06,
         }}
       >
-        {/* OVERLAY que equilibra el fondo global (no reutilizable, inline) */}
+        {/* OVERLAY que equilibra el fondo global */}
         <div
           aria-hidden
           className="absolute inset-0 -z-10"
@@ -132,26 +145,26 @@ export default function Contact() {
         />
 
         <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
-                  {/* brillo/grilla sutil */}
-                  <div className="absolute inset-0 opacity-[0.06] [background-image:linear-gradient(var(--tw-gradient-stops))] from-white via-white to-white [mask-image:radial-gradient(60%_60%_at_50%_40%,_black,_transparent)]" />
-                  {/* blobs cónicos animados en capas (muy suaves) */}
-                  <div className="absolute -top-1/3 left-1/2 h-[95vmax] w-[95vmax] -translate-x-1/2 rounded-full blur-3xl opacity-35 bg-[conic-gradient(at_top_right,_theme(colors.cyan.400),_theme(colors.fuchsia.500),_theme(colors.indigo.500),_theme(colors.cyan.400))] animate-[pulse_6s_ease-in-out_infinite]" />
-                  <div className="absolute bottom-[-25vmax] right-[-10vmax] h-[60vmax] w-[60vmax] rounded-full blur-3xl opacity-30 bg-[radial-gradient(circle_at_30%_30%,_rgba(0,245,212,.25),_rgba(199,125,255,.15),_transparent_60%)]" />
-                  <div className="absolute top-[-10vmax] left-[-10vmax] h-[40vmax] w-[40vmax] rounded-full blur-3xl opacity-25 bg-[radial-gradient(circle_at_70%_30%,_rgba(99,102,241,.25),_rgba(0,245,212,.15),_transparent_60%)]" />
+          {/* brillo/grilla sutil */}
+          <div className="absolute inset-0 opacity-[0.06] [background-image:linear-gradient(var(--tw-gradient-stops))] from-white via-white to-white [mask-image:radial-gradient(60%_60%_at_50%_40%,_black,_transparent)]" />
+          {/* blobs cónicos animados en capas (muy suaves) */}
+          <div className="absolute -top-1/3 left-1/2 h-[95vmax] w-[95vmax] -translate-x-1/2 rounded-full blur-3xl opacity-35 bg-[conic-gradient(at_top_right,_theme(colors.cyan.400),_theme(colors.fuchsia.500),_theme(colors.indigo.500),_theme(colors.cyan.400))] animate-[pulse_6s_ease-in-out_infinite]" />
+          <div className="absolute bottom-[-25vmax] right-[-10vmax] h-[60vmax] w-[60vmax] rounded-full blur-3xl opacity-30 bg-[radial-gradient(circle_at_30%_30%,_rgba(0,245,212,.25),_rgba(199,125,255,.15),_transparent_60%)]" />
+          <div className="absolute top-[-10vmax] left-[-10vmax] h-[40vmax] w-[40vmax] rounded-full blur-3xl opacity-25 bg-[radial-gradient(circle_at_70%_30%,_rgba(99,102,241,.25),_rgba(0,245,212,.15),_transparent_60%)]" />
 
-                  {/* overlay de equilibrio para lectura */}
-                  <div
-                    className="absolute inset-0"
-                    style={{
-                      background:
-                        "radial-gradient(70% 60% at 50% 30%, rgba(10,17,40, var(--sec-alpha)), rgba(10,17,40, calc(var(--sec-alpha) + 0.02)) 60%, transparent 100%)",
-                      WebkitMaskImage:
-                        "radial-gradient(60% 60% at 50% 40%, rgba(0,0,0,var(--sec-mask-strength)), transparent)",
-                      maskImage:
-                        "radial-gradient(60% 60% at 50% 40%, rgba(0,0,0,var(--sec-mask-strength)), transparent)",
-                    }}
-                  />
-                </div>
+          {/* overlay de equilibrio para lectura */}
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                "radial-gradient(70% 60% at 50% 30%, rgba(10,17,40, var(--sec-alpha)), rgba(10,17,40, calc(var(--sec-alpha) + 0.02)) 60%, transparent 100%)",
+              WebkitMaskImage:
+                "radial-gradient(60% 60% at 50% 40%, rgba(0,0,0,var(--sec-mask-strength)), transparent)",
+              maskImage:
+                "radial-gradient(60% 60% at 50% 40%, rgba(0,0,0,var(--sec-mask-strength)), transparent)",
+            }}
+          />
+        </div>
 
         <div className="flex flex-col-reverse md:flex-row gap-8 px-4 md:px-10 max-w-7xl mx-auto items-start">
           {/* Columna izquierda: info + accesos rápidos */}
@@ -214,7 +227,7 @@ export default function Contact() {
                 </div>
               </motion.a>
 
-              {/* Sugerencias rápidas (nudge de claridad) */}
+              {/* Sugerencias rápidas */}
               <motion.div variants={staggerItem}>
                 <p className="text-xs text-white/70 mb-2">¿Qué querés automatizar? (tocá para agregar)</p>
                 <div className="flex flex-wrap gap-2">
@@ -360,7 +373,17 @@ export default function Contact() {
                 </motion.span>
               </motion.button>
 
-              {/* Mensaje de seguridad/privacidad breve */}
+              {/* Fallback WhatsApp, obligatorio */}
+              <motion.a
+                href="https://wa.me/5493884486112?text=Hola%20EtherCode%2C%20quiero%20una%20demo%20del%20empleado%20digital."
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block text-sm text-white/80 underline hover:text-white"
+                variants={staggerItem}
+              >
+                Si preferís, escribinos por WhatsApp
+              </motion.a>
+
               <motion.p className="text-[11px] text-white/50" variants={staggerItem}>
                 Usamos tus datos solo para contactarte sobre la demo. Podés pedir el borrado cuando quieras.
               </motion.p>

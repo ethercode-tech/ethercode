@@ -1,28 +1,39 @@
+export default async function handler(req, res) {
+  if (req.method !== "POST") return res.status(405).json({ ok: false, error: "Método no permitido" });
 
-export async function POST(req, res) {
   try {
-    const body = await (req.json?.() || new Promise(r => {
-      let b = ""; req.on("data", c => b += c);
-      req.on("end", () => r(JSON.parse(b || "{}")));
-    }));
+    const workerUrl = process.env.CF_WORKER_CHAT_URL;
+    if (!workerUrl) return res.status(500).json({ ok: false, error: "Falta CF_WORKER_CHAT_URL" });
 
-    const r = await fetch(process.env.N8N_WEBHOOK_URL, {
+    const r = await fetch(workerUrl, {
       method: "POST",
       headers: { "content-type": "application/json" },
-      body: JSON.stringify(body),
-      cache: "no-store",
+      body: JSON.stringify(req.body || {}),
     });
 
-    const data = await r.json().catch(() => ({}));
+    const ct = r.headers.get("content-type") || "";
 
-    const done = (payload, status=200) =>
-      (res ? res.status(status).json(payload) : new Response(JSON.stringify(payload), { status, headers: { "content-type":"application/json" }}));
+    // Errores (JSON) passthrough
+    if (!ct.includes("text/event-stream")) {
+      const text = await r.text().catch(() => "");
+      res.status(r.status).send(text);
+      return;
+    }
 
-    if (!r.ok) return done({ ok:false, error:`n8n ${r.status}` }, 502);
-    return done({ ok:true, ...data }, 200);
+    // Streaming passthrough
+    res.statusCode = r.status;
+    res.setHeader("Content-Type", "text/event-stream; charset=utf-8");
+    res.setHeader("Cache-Control", "no-cache");
+    res.setHeader("Connection", "keep-alive");
+
+    const reader = r.body.getReader();
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      res.write(Buffer.from(value));
+    }
+    res.end();
   } catch (e) {
-    const done = (payload, status=500) =>
-      (res ? res.status(status).json(payload) : new Response(JSON.stringify(payload), { status, headers: { "content-type":"application/json" }}));
-    return done({ ok:false, error: e?.message || "Error enviando a n8n" }, 502);
+    res.status(502).json({ ok: false, error: e?.message || "Error proxy chat" });
   }
 }
