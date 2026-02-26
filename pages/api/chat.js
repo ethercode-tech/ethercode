@@ -1,5 +1,8 @@
+// pages/api/chat.js
 export default async function handler(req, res) {
-  if (req.method !== "POST") return res.status(405).json({ ok: false, error: "Método no permitido" });
+  if (req.method !== "POST") {
+    return res.status(405).json({ ok: false, error: "Método no permitido" });
+  }
 
   try {
     const workerUrl = process.env.CF_WORKER_CHAT_URL;
@@ -13,7 +16,7 @@ export default async function handler(req, res) {
 
     const ct = r.headers.get("content-type") || "";
 
-    // Errores (JSON) passthrough
+    // Errores JSON passthrough
     if (!ct.includes("text/event-stream")) {
       const text = await r.text().catch(() => "");
       res.status(r.status).send(text);

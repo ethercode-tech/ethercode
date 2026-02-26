@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import sendToAgentStream from '../components/chatBot'
+import sendToAgentStream from "../lib/sendToAgentStream";
 
 export default function ÉtherCodeAssistantModal({
   open,
@@ -97,16 +97,17 @@ export default function ÉtherCodeAssistantModal({
     const text = input.trim();
     if (!text || isTyping) return;
   
-    setMessages((m) => [...m, { sender: "user", text }]);
     setInput("");
     setIsTyping(true);
     setErrorBar("");
   
-    // bubble vacío del bot para ir completando
-    setMessages((m) => [...m, { sender: "bot", text: "" }]);
+    setMessages((m) => [...m, { sender: "user", text }, { sender: "bot", text: "" }]);
   
     try {
-      const { reader, decoder } = await sendToAgentStream({ message: text });
+      const { reader, decoder } = await sendToAgentStream({
+        message: text,
+        sessionId: sessionIdRef.current,
+      });
   
       let reply = "";
       let buffer = "";
