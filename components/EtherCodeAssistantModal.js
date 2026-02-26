@@ -1,6 +1,11 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import sendToAgentStream from "../lib/sendToAgentStream";
+import {
+  extractLeadFieldsFromText,
+  mergeLeadDraft,
+  isLeadReady,
+} from "../lib/leadDraft";
 
 export default function ÉtherCodeAssistantModal({
   open,
@@ -16,12 +21,22 @@ export default function ÉtherCodeAssistantModal({
   const bottomRef = useRef(null);
   const textareaRef = useRef(null);
 
+  // draft lead (se junta durante la charla)
+  const leadDraftRef = useRef({
+    personName: "",
+    businessName: "",
+    businessType: "",
+    email: "",
+    phone: "",
+    sent: false,
+  });
+
   // Persist session id
   useEffect(() => {
     if (typeof window === "undefined") return;
     let sid = localStorage.getItem("ethercode_chat_sid");
     if (!sid) {
-      sid = (crypto?.randomUUID?.() || String(Date.now()));
+      sid = crypto?.randomUUID?.() || String(Date.now());
       localStorage.setItem("ethercode_chat_sid", sid);
     }
     sessionIdRef.current = sid;
@@ -40,9 +55,10 @@ export default function ÉtherCodeAssistantModal({
     };
   }, [open, onClose]);
 
-  // Welcome (Nexo)
+  // Welcome
   useEffect(() => {
     if (!open || !showWelcome) return;
+
     setMessages((m) =>
       m.length
         ? m
@@ -50,7 +66,7 @@ export default function ÉtherCodeAssistantModal({
             {
               sender: "bot",
               text:
-                "¡Hola! Soy Nexo 🧠, tu empleado digital de ÉtherCode. Decime qué querés lograr y lo resolvemos: cotizar, integrar WhatsApp, automatizar ventas o armar tu web/app 🚀",
+                "¡Hola! Soy Nexo 🧠, el asistente de ventas de ÉtherCode. Para armarte un Empleado Digital a medida, decime: ¿cómo se llama tu negocio y qué querés automatizar primero (WhatsApp, reservas o ventas)?",
             },
           ]
     );
@@ -75,59 +91,73 @@ export default function ÉtherCodeAssistantModal({
 
   if (!open) return null;
 
-  async function sendToAgent({ message, context }) {
-    const res = await fetch("/api/send-to-n8n", {
+  async function trySendLeadOnce(lastUserMessage) {
+    const draft = leadDraftRef.current;
+    if (draft.sent) return;
+    if (!isLeadReady(draft)) return;
+
+    const res = await fetch("/api/lead", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        message,
         sessionId: sessionIdRef.current,
-        meta: {
-          url: typeof window !== "undefined" ? window.location.href : "",
-          tz: "America/Argentina/Jujuy",
-          context: context || "",
-        },
+        url: typeof window !== "undefined" ? window.location.href : "",
+        draft,
+        lastMessage: lastUserMessage || "",
       }),
     });
-    if (!res.ok) throw new Error(await res.text().catch(() => "n8n error"));
-    return res.json();
+
+    if (res.ok) {
+      leadDraftRef.current = { ...draft, sent: true };
+    }
   }
 
   async function handleSend() {
     const text = input.trim();
     if (!text || isTyping) return;
-  
+
+    // juntar lead fields (solo del user)
+    try {
+      const fields = extractLeadFieldsFromText(text);
+      leadDraftRef.current = mergeLeadDraft(leadDraftRef.current, fields);
+      // intentar enviar lead solo si está completo (negocio + contacto)
+      trySendLeadOnce(text).catch(() => {});
+    } catch {
+      // no rompemos chat si extractor falla
+    }
+
     setInput("");
     setIsTyping(true);
     setErrorBar("");
-  
+
+    // agregar mensaje user + bubble bot vacío en 1 update
     setMessages((m) => [...m, { sender: "user", text }, { sender: "bot", text: "" }]);
-  
+
     try {
       const { reader, decoder } = await sendToAgentStream({
         message: text,
         sessionId: sessionIdRef.current,
-      })
-  
+      });
+
       let reply = "";
       let buffer = "";
-  
+
       while (true) {
         const { done, value } = await reader.read();
         if (done) break;
-  
+
         buffer += decoder.decode(value, { stream: true });
         const lines = buffer.split("\n");
         buffer = lines.pop() || "";
-  
+
         for (const line of lines) {
           const t = line.trim();
           if (!t) continue;
-  
+
           if (t.startsWith("data:")) {
             const payload = t.slice(5).trim();
             if (!payload || payload === "[DONE]") continue;
-  
+
             let chunk = "";
             try {
               const obj = JSON.parse(payload);
@@ -135,7 +165,7 @@ export default function ÉtherCodeAssistantModal({
             } catch {
               chunk = payload;
             }
-  
+
             if (chunk) {
               reply += chunk;
               setMessages((m) => {
@@ -153,7 +183,8 @@ export default function ÉtherCodeAssistantModal({
         const updated = [...m];
         updated[updated.length - 1] = {
           sender: "bot",
-          text: "Tuvimos un problema al procesar tu consulta. Probá otra vez en unos segundos.",
+          text:
+            "Tuvimos un problema al procesar tu consulta. Probá otra vez en unos segundos, o escribinos directo por WhatsApp.",
         };
         return updated;
       });
@@ -181,10 +212,7 @@ export default function ÉtherCodeAssistantModal({
       aria-label={title}
     >
       {/* Backdrop + aura */}
-      <div
-        className="absolute inset-0 bg-black/70 backdrop-blur-sm"
-        onClick={onClose}
-      />
+      <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={onClose} />
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 opacity-30"
@@ -200,20 +228,16 @@ export default function ÉtherCodeAssistantModal({
                    shadow-[0_30px_100px_rgba(0,0,0,0.55)] border border-white/10
                    bg-neutral-950/90 text-neutral-100 flex flex-col"
       >
-        {/* Header con estado */}
+        {/* Header */}
         <div className="relative px-5 py-3 text-white bg-gradient-to-r from-[#00B4D8] via-[#00B4E7] to-[#C77DFF]">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-white/20 grid place-items-center">
-                🧠
-              </div>
+              <div className="w-8 h-8 rounded-lg bg-white/20 grid place-items-center">🧠</div>
               <div>
-                <div className="font-semibold leading-none">
-                  {title} — Nexo
-                </div>
+                <div className="font-semibold leading-none">{title} — Nexo</div>
                 <div className="text-[11px] opacity-95 flex items-center gap-2">
                   <span className="inline-block w-2 h-2 rounded-full bg-emerald-300 animate-pulse" />
-                  Responde en segundos • 24/7
+                  Ventas y automatización • 24/7
                 </div>
               </div>
             </div>
@@ -238,11 +262,7 @@ export default function ÉtherCodeAssistantModal({
         {/* Mensajes */}
         <div className="flex-1 overflow-y-auto px-4 py-4 space-y-3">
           {messages.map((m, i) => (
-            <Bubble
-              key={i}
-              side={m.sender === "user" ? "right" : "left"}
-              booking_url={m.booking_url}
-            >
+            <Bubble key={i} side={m.sender === "user" ? "right" : "left"} booking_url={m.booking_url}>
               {m.text}
             </Bubble>
           ))}
@@ -285,26 +305,13 @@ export default function ÉtherCodeAssistantModal({
                   title="Enviar"
                 >
                   Enviar
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-4 w-4"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M5 12h14M12 5l7 7-7 7"
-                    />
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14M12 5l7 7-7 7" />
                   </svg>
                 </button>
               </div>
               <div className="px-2 pt-1">
-                <span className="text-[11px] text-neutral-400">
-                  Enter envía • Shift+Enter hace salto de línea
-                </span>
+                <span className="text-[11px] text-neutral-400">Enter envía • Shift+Enter hace salto de línea</span>
               </div>
             </div>
           </div>
@@ -338,19 +345,16 @@ function autolink(text) {
   });
 }
 
-/* === UI Bubbles (estéticas diferentes) === */
 function Bubble({ side = "left", children, booking_url, raw = false }) {
   const isRight = side === "right";
   const hasLink = typeof booking_url === "string" && booking_url.startsWith("http");
   const content = raw ? children : typeof children === "string" ? autolink(children) : children;
 
-  // Estilo del bot: aurora conic + bordes suaves
   const botStyle = {
     background:
       "conic-gradient(at 10% 10%, rgba(0,245,212,0.18), rgba(0,180,231,0.22), rgba(199,125,255,0.18), rgba(20,22,32,0.85))",
   };
 
-  // Estilo del usuario: glass oscuro + borde cian + halo sutil
   const userClass =
     "bg-neutral-900/80 text-white border border-cyan-300/40 shadow-[0_0_24px_rgba(0,180,231,0.18)]";
 
