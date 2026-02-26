@@ -37,25 +37,29 @@ export default function EtherCodeAssistantModal({
   // Persist session id
   useEffect(() => {
     if (typeof window === "undefined") return;
+
     let sid = localStorage.getItem("ethercode_chat_sid");
     if (!sid) {
-      sid = crypto?.randomUUID?.() || String(Date.now());
+      const uuid =
+        (globalThis.crypto && crypto.randomUUID && crypto.randomUUID()) ||
+        String(Date.now());
+      sid = uuid;
       localStorage.setItem("ethercode_chat_sid", sid);
     }
+
     sessionIdRef.current = sid;
   }, []);
 
-  // Reset state each time modal opens (UX: fresh start visuals)
+  // Reset state each time modal opens
   useEffect(() => {
     if (!open) return;
-    // no borramos mensajes si querés persistirlos. Si querés persistencia real, sacá estas 2 líneas
+
     setMessages([]);
     setHasStarted(false);
     setErrorBar("");
     setInput("");
     setIsTyping(false);
 
-    // reset draft lead
     leadDraftRef.current = {
       personName: "",
       businessName: "",
@@ -69,9 +73,14 @@ export default function EtherCodeAssistantModal({
   // Lock scroll + ESC
   useEffect(() => {
     if (!open) return;
+
     const prevOverflow = document.documentElement.style.overflow;
     document.documentElement.style.overflow = "hidden";
-    const onEsc = (e) => e.key === "Escape" && onClose?.();
+
+    const onEsc = (e) => {
+      if (e.key === "Escape") onClose?.();
+    };
+
     window.addEventListener("keydown", onEsc);
     return () => {
       document.documentElement.style.overflow = prevOverflow || "";
@@ -106,49 +115,7 @@ export default function EtherCodeAssistantModal({
     return `https://wa.me/5493884486112?text=${msg}`;
   }, []);
 
-  const welcomeBlock = useMemo(() => {
-    if (!showWelcome || hasStarted) return null;
-    return (
-      <div className="rounded-2xl p-4 bg-neutral-900/60 border border-white/10 text-sm text-neutral-200">
-        <div className="flex items-start gap-3">
-          <div className="w-9 h-9 shrink-0 rounded-xl bg-white/10 grid place-items-center">
-            🧠
-          </div>
-          <div className="min-w-0">
-            <div className="font-semibold text-white">
-              Probá a Nexo, el asistente de ventas de ÉtherCode
-            </div>
-            <div className="mt-1 text-neutral-300">
-              Te ayuda a definir tu <span className="text-white font-semibold">Empleado Digital</span> para automatizar tareas repetitivas.
-              Para empezar rápido, respondé con:
-              <ul className="mt-2 space-y-1 text-neutral-300">
-                <li>• Nombre del negocio</li>
-                <li>• Qué querés automatizar primero (WhatsApp, reservas o ventas)</li>
-                <li>• Tu contacto (WhatsApp o email) si querés que te llamemos</li>
-              </ul>
-            </div>
-            <div className="mt-3 flex flex-wrap gap-2">
-              <QuickChip
-                onClick={() => setInput("Mi negocio se llama ____ y quiero automatizar WhatsApp para responder consultas.")}
-              >
-                WhatsApp
-              </QuickChip>
-              <QuickChip
-                onClick={() => setInput("Tengo ____ y quiero automatizar reservas/turnos y confirmaciones.")}
-              >
-                Reservas
-              </QuickChip>
-              <QuickChip
-                onClick={() => setInput("Quiero automatizar ventas: calificar leads, seguimiento y recordatorios.")}
-              >
-                Ventas
-              </QuickChip>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }, [showWelcome, hasStarted]);
+  const welcomeVisible = !!showWelcome && !hasStarted && messages.length === 0 && !isTyping;
 
   async function trySendLeadOnce(lastUserMessage) {
     const draft = leadDraftRef.current;
@@ -173,27 +140,31 @@ export default function EtherCodeAssistantModal({
 
   function humanizeErrorMessage(raw) {
     const msg = String(raw || "");
+
+    // caso: rate limit
     if (msg.includes("Límite diario por IP")) {
       return {
-        banner:
-          "Hoy ya usaste el cupo gratuito de pruebas desde esta red.",
+        banner: "Cupo gratuito diario alcanzado",
         bot:
-          "Ya usaste el cupo gratuito de hoy 😊. Si querés, seguimos por WhatsApp y te armamos la propuesta del Empleado Digital en minutos.",
+          "Listo, ya probaste el demo desde esta red por hoy. Si querés seguir ahora mismo, escribinos por WhatsApp y te armamos el Empleado Digital con tu caso real (sin esperar al reset del límite).",
         showWhatsApp: true,
       };
     }
+
+    // timeouts u otros
     if (msg.toLowerCase().includes("timeout") || msg.toLowerCase().includes("timed out")) {
       return {
-        banner: "El asistente está tardando más de lo normal.",
+        banner: "El asistente está tardando más de lo normal",
         bot:
-          "Estoy tardando un poco más de lo usual. Probá de nuevo en unos segundos, o si querés avanzar ya, escribinos por WhatsApp y lo resolvemos rápido.",
+          "Estoy tardando un poco más de lo normal. Probá de nuevo en unos segundos, o si querés avanzar ya, escribinos por WhatsApp y lo resolvemos rápido.",
         showWhatsApp: true,
       };
     }
+
     return {
-      banner: msg || "No pude conectar con el asistente.",
+      banner: "No pude procesar tu consulta",
       bot:
-        "Tuvimos un problema al procesar tu consulta. Probá otra vez en unos segundos, o escribinos directo por WhatsApp así lo resolvemos sin vueltas.",
+        "Tuve un problema al procesar eso. Probá otra vez en unos segundos. Si estás con apuro, escribinos por WhatsApp y lo resolvemos sin vueltas.",
       showWhatsApp: true,
     };
   }
@@ -208,7 +179,6 @@ export default function EtherCodeAssistantModal({
     try {
       const fields = extractLeadFieldsFromText(text);
       leadDraftRef.current = mergeLeadDraft(leadDraftRef.current, fields);
-      // intentar enviar lead solo si está completo (negocio + contacto)
       trySendLeadOnce(text).catch(() => {});
     } catch {
       // no rompemos chat si extractor falla
@@ -218,7 +188,6 @@ export default function EtherCodeAssistantModal({
     setIsTyping(true);
     setErrorBar("");
 
-    // agregar mensaje user + bubble bot vacío en 1 update
     setMessages((m) => [...m, { sender: "user", text }, { sender: "bot", text: "" }]);
 
     try {
@@ -343,7 +312,7 @@ export default function EtherCodeAssistantModal({
           </div>
         </div>
 
-        {/* Error banner (friendly) */}
+        {/* Error banner */}
         {errorBar && (
           <div className="px-4 py-2 text-xs bg-red-900/30 text-red-200 border-b border-red-800/40">
             {errorBar}{" "}
@@ -360,7 +329,41 @@ export default function EtherCodeAssistantModal({
 
         {/* Mensajes */}
         <div className="flex-1 overflow-y-auto px-4 py-4 space-y-3">
-          {welcomeBlock}
+          {welcomeVisible && (
+            <div className="rounded-2xl p-4 bg-neutral-900/60 border border-white/10 text-sm text-neutral-200">
+              <div className="flex items-start gap-3">
+                <div className="w-9 h-9 shrink-0 rounded-xl bg-white/10 grid place-items-center">
+                  🧠
+                </div>
+                <div className="min-w-0">
+                  <div className="font-semibold text-white">
+                    Soy Nexo, el asistente de ventas de ÉtherCode
+                  </div>
+                  <div className="mt-1 text-neutral-300">
+                    Te ayudo a definir un <span className="text-white font-semibold">Empleado Digital</span> para automatizar tareas repetitivas.
+                    Para empezar rápido, decime:
+                    <ul className="mt-2 space-y-1 text-neutral-300">
+                      <li>• Nombre del negocio</li>
+                      <li>• Qué querés automatizar primero (WhatsApp, reservas o ventas)</li>
+                      <li>• Tu WhatsApp o email si querés que te contactemos</li>
+                    </ul>
+                  </div>
+
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    <QuickChip onClick={() => setInput("Mi negocio se llama ____ y quiero automatizar WhatsApp para responder consultas.")}>
+                      WhatsApp
+                    </QuickChip>
+                    <QuickChip onClick={() => setInput("Tengo ____ y quiero automatizar reservas/turnos y confirmaciones.")}>
+                      Reservas
+                    </QuickChip>
+                    <QuickChip onClick={() => setInput("Quiero automatizar ventas: calificar leads, seguimiento y recordatorios.")}>
+                      Ventas
+                    </QuickChip>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
 
           {messages.map((m, i) => (
             <Bubble
@@ -418,14 +421,11 @@ export default function EtherCodeAssistantModal({
                     stroke="currentColor"
                     strokeWidth="2"
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M5 12h14M12 5l7 7-7 7"
-                    />
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14M12 5l7 7-7 7" />
                   </svg>
                 </button>
               </div>
+
               <div className="px-2 pt-1 flex items-center justify-between gap-3">
                 <span className="text-[11px] text-neutral-400">
                   Enter envía • Shift+Enter hace salto de línea
@@ -487,11 +487,7 @@ function autolink(text) {
 function Bubble({ side = "left", children, booking_url, raw = false }) {
   const isRight = side === "right";
   const hasLink = typeof booking_url === "string" && booking_url.startsWith("http");
-  const content = raw
-    ? children
-    : typeof children === "string"
-    ? autolink(children)
-    : children;
+  const content = raw ? children : typeof children === "string" ? autolink(children) : children;
 
   const botStyle = {
     background:
