@@ -7,7 +7,7 @@ export default async function handler(req, res) {
     try {
         const FORM_ID = "xzdaodzl"; // <- EJ: xabcdxyz
         const endpoint = `https://formspree.io/f/${FORM_ID}`;
-      const formUrl = process.env.FORMSPREE_LEADS_URL || endpoint;
+      const formUrl = endpoint;
       if (!formUrl) {
         return res.status(500).json({ ok: false, error: "Falta FORMSPREE_LEADS_URL" });
       }
