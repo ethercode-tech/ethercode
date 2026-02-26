@@ -107,7 +107,7 @@ export default function ÉtherCodeAssistantModal({
       const { reader, decoder } = await sendToAgentStream({
         message: text,
         sessionId: sessionIdRef.current,
-      });
+      })
   
       let reply = "";
       let buffer = "";
