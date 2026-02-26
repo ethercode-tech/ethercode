@@ -1,5 +1,4 @@
 "use client";
-
 import { useEffect, useMemo, useRef, useState } from "react";
 import sendToAgentStream from "../lib/sendToAgentStream";
 import {
@@ -8,7 +7,7 @@ import {
   isLeadReady,
 } from "../lib/leadDraft";
 
-export default function EtherCodeAssistantModal({
+export default function ÉtherCodeAssistantModal({
   open,
   onClose,
   showWelcome = true,
@@ -18,7 +17,6 @@ export default function EtherCodeAssistantModal({
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const [errorBar, setErrorBar] = useState("");
-  const [hasStarted, setHasStarted] = useState(false);
 
   const sessionIdRef = useRef(null);
   const bottomRef = useRef(null);
@@ -34,59 +32,53 @@ export default function EtherCodeAssistantModal({
     sent: false,
   });
 
+  const whatsappHref = useMemo(() => {
+    const msg = encodeURIComponent(
+      "Hola EtherCode, estaba probando a Nexo desde la web y quiero avanzar con un Empleado Digital para mi negocio."
+    );
+    return `https://wa.me/5493884486112?text=${msg}`;
+  }, []);
+
   // Persist session id
   useEffect(() => {
     if (typeof window === "undefined") return;
-
     let sid = localStorage.getItem("ethercode_chat_sid");
     if (!sid) {
-      const uuid =
-        (globalThis.crypto && crypto.randomUUID && crypto.randomUUID()) ||
-        String(Date.now());
-      sid = uuid;
+      sid = (crypto?.randomUUID?.() || String(Date.now()));
       localStorage.setItem("ethercode_chat_sid", sid);
     }
-
     sessionIdRef.current = sid;
   }, []);
-
-  // Reset state each time modal opens
-  useEffect(() => {
-    if (!open) return;
-
-    setMessages([]);
-    setHasStarted(false);
-    setErrorBar("");
-    setInput("");
-    setIsTyping(false);
-
-    leadDraftRef.current = {
-      personName: "",
-      businessName: "",
-      businessType: "",
-      email: "",
-      phone: "",
-      sent: false,
-    };
-  }, [open]);
 
   // Lock scroll + ESC
   useEffect(() => {
     if (!open) return;
-
     const prevOverflow = document.documentElement.style.overflow;
     document.documentElement.style.overflow = "hidden";
-
-    const onEsc = (e) => {
-      if (e.key === "Escape") onClose?.();
-    };
-
+    const onEsc = (e) => e.key === "Escape" && onClose?.();
     window.addEventListener("keydown", onEsc);
     return () => {
       document.documentElement.style.overflow = prevOverflow || "";
       window.removeEventListener("keydown", onEsc);
     };
   }, [open, onClose]);
+
+  // Welcome (se borra cuando el user manda el 1er mensaje)
+  useEffect(() => {
+    if (!open || !showWelcome) return;
+
+    setMessages((m) =>
+      m.length
+        ? m
+        : [
+            {
+              sender: "bot",
+              text:
+                "Hola, soy Nexo 🧠, el asistente de ventas de ÉtherCode.\n\nPara ayudarte rápido, decime 2 cosas:\n1) ¿Cómo se llama tu negocio?\n2) ¿Qué querés automatizar primero: WhatsApp, reservas o ventas?\n\nSi querés que te contactemos, dejá tu WhatsApp o email.",
+            },
+          ]
+    );
+  }, [open, showWelcome]);
 
   // Autoscroll
   useEffect(() => {
@@ -101,21 +93,11 @@ export default function EtherCodeAssistantModal({
     const max = 20 * 6; // ~6 líneas
     el.style.height = Math.min(el.scrollHeight, max) + "px";
   };
-
   useEffect(() => {
     autosize();
   }, [input, open]);
 
   if (!open) return null;
-
-  const whatsappHref = useMemo(() => {
-    const msg = encodeURIComponent(
-      "Hola EtherCode, estaba probando a Nexo desde la web y quiero avanzar con un Empleado Digital para mi negocio."
-    );
-    return `https://wa.me/5493884486112?text=${msg}`;
-  }, []);
-
-  const welcomeVisible = !!showWelcome && !hasStarted && messages.length === 0 && !isTyping;
 
   async function trySendLeadOnce(lastUserMessage) {
     const draft = leadDraftRef.current;
@@ -138,34 +120,21 @@ export default function EtherCodeAssistantModal({
     }
   }
 
-  function humanizeErrorMessage(raw) {
+  function friendlyError(raw) {
     const msg = String(raw || "");
-
-    // caso: rate limit
     if (msg.includes("Límite diario por IP")) {
       return {
-        banner: "Cupo gratuito diario alcanzado",
+        banner: "Límite diario alcanzado",
         bot:
-          "Listo, ya probaste el demo desde esta red por hoy. Si querés seguir ahora mismo, escribinos por WhatsApp y te armamos el Empleado Digital con tu caso real (sin esperar al reset del límite).",
-        showWhatsApp: true,
+          "Ya se alcanzó el cupo gratuito de hoy desde esta red.\n\nSi querés avanzar igual, escribinos por WhatsApp y te armamos la propuesta del Empleado Digital con tu caso real.",
+        booking_url: whatsappHref,
       };
     }
-
-    // timeouts u otros
-    if (msg.toLowerCase().includes("timeout") || msg.toLowerCase().includes("timed out")) {
-      return {
-        banner: "El asistente está tardando más de lo normal",
-        bot:
-          "Estoy tardando un poco más de lo normal. Probá de nuevo en unos segundos, o si querés avanzar ya, escribinos por WhatsApp y lo resolvemos rápido.",
-        showWhatsApp: true,
-      };
-    }
-
     return {
-      banner: "No pude procesar tu consulta",
+      banner: msg || "No pude conectar con el asistente.",
       bot:
-        "Tuve un problema al procesar eso. Probá otra vez en unos segundos. Si estás con apuro, escribinos por WhatsApp y lo resolvemos sin vueltas.",
-      showWhatsApp: true,
+        "Tuve un problema al procesar tu consulta. Probá de nuevo en unos segundos.\n\nSi estás con apuro, escribinos por WhatsApp y lo resolvemos sin vueltas.",
+      booking_url: whatsappHref,
     };
   }
 
@@ -173,22 +142,31 @@ export default function EtherCodeAssistantModal({
     const text = input.trim();
     if (!text || isTyping) return;
 
-    if (!hasStarted) setHasStarted(true);
+    // 1) sacar el welcome apenas empieza la charla (evita “se vuelve a presentar”)
+    setMessages((m) => {
+      const next = [...m];
 
-    // juntar lead fields (solo del user)
+      // si el primer mensaje es bot-welcome y todavía no hubo user, lo borramos
+      const hasUser = next.some((x) => x.sender === "user");
+      if (!hasUser && next.length === 1 && next[0]?.sender === "bot") {
+        next.length = 0;
+      }
+
+      // agregamos user + bubble bot vacío
+      next.push({ sender: "user", text }, { sender: "bot", text: "" });
+      return next;
+    });
+
+    // 2) lead collector (solo del user)
     try {
       const fields = extractLeadFieldsFromText(text);
       leadDraftRef.current = mergeLeadDraft(leadDraftRef.current, fields);
       trySendLeadOnce(text).catch(() => {});
-    } catch {
-      // no rompemos chat si extractor falla
-    }
+    } catch {}
 
     setInput("");
     setIsTyping(true);
     setErrorBar("");
-
-    setMessages((m) => [...m, { sender: "user", text }, { sender: "bot", text: "" }]);
 
     try {
       const { reader, decoder } = await sendToAgentStream({
@@ -236,16 +214,15 @@ export default function EtherCodeAssistantModal({
       }
     } catch (e) {
       console.error(e);
-
-      const friendly = humanizeErrorMessage(e?.message || "");
-      setErrorBar(friendly.banner);
+      const f = friendlyError(e?.message || "");
+      setErrorBar(f.banner);
 
       setMessages((m) => {
         const updated = [...m];
         updated[updated.length - 1] = {
           sender: "bot",
-          text: friendly.bot,
-          booking_url: friendly.showWhatsApp ? whatsappHref : null,
+          text: f.bot,
+          booking_url: f.booking_url,
         };
         return updated;
       });
@@ -272,7 +249,10 @@ export default function EtherCodeAssistantModal({
       aria-label={title}
     >
       {/* Backdrop + aura */}
-      <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={onClose} />
+      <div
+        className="absolute inset-0 bg-black/70 backdrop-blur-sm"
+        onClick={onClose}
+      />
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 opacity-30"
@@ -286,15 +266,19 @@ export default function EtherCodeAssistantModal({
       <div
         className="relative w-[94vw] max-w-3xl h-[86dvh] sm:h-[78vh] rounded-2xl overflow-hidden
                    shadow-[0_30px_100px_rgba(0,0,0,0.55)] border border-white/10
-                   bg-neutral-950/90 text-neutral-100 flex flex-col"
+                   bg-neutral-950/92 text-neutral-100 flex flex-col"
       >
         {/* Header */}
         <div className="relative px-5 py-3 text-white bg-gradient-to-r from-[#00B4D8] via-[#00B4E7] to-[#C77DFF]">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-white/20 grid place-items-center">🧠</div>
+              <div className="w-9 h-9 rounded-xl bg-white/15 grid place-items-center">
+                🧠
+              </div>
               <div>
-                <div className="font-semibold leading-none">{title} — Nexo</div>
+                <div className="font-semibold leading-none">
+                  {title} — Nexo
+                </div>
                 <div className="text-[11px] opacity-95 flex items-center gap-2">
                   <span className="inline-block w-2 h-2 rounded-full bg-emerald-300 animate-pulse" />
                   Ventas y automatización • 24/7
@@ -312,59 +296,15 @@ export default function EtherCodeAssistantModal({
           </div>
         </div>
 
-        {/* Error banner */}
+        {/* Error */}
         {errorBar && (
-          <div className="px-4 py-2 text-xs bg-red-900/30 text-red-200 border-b border-red-800/40">
-            {errorBar}{" "}
-            <a
-              href={whatsappHref}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="underline font-semibold"
-            >
-              Abrir WhatsApp
-            </a>
+          <div className="px-4 py-2 text-xs bg-red-900/25 text-red-200 border-b border-red-800/30">
+            {errorBar}
           </div>
         )}
 
         {/* Mensajes */}
         <div className="flex-1 overflow-y-auto px-4 py-4 space-y-3">
-          {welcomeVisible && (
-            <div className="rounded-2xl p-4 bg-neutral-900/60 border border-white/10 text-sm text-neutral-200">
-              <div className="flex items-start gap-3">
-                <div className="w-9 h-9 shrink-0 rounded-xl bg-white/10 grid place-items-center">
-                  🧠
-                </div>
-                <div className="min-w-0">
-                  <div className="font-semibold text-white">
-                    Soy Nexo, el asistente de ventas de ÉtherCode
-                  </div>
-                  <div className="mt-1 text-neutral-300">
-                    Te ayudo a definir un <span className="text-white font-semibold">Empleado Digital</span> para automatizar tareas repetitivas.
-                    Para empezar rápido, decime:
-                    <ul className="mt-2 space-y-1 text-neutral-300">
-                      <li>• Nombre del negocio</li>
-                      <li>• Qué querés automatizar primero (WhatsApp, reservas o ventas)</li>
-                      <li>• Tu WhatsApp o email si querés que te contactemos</li>
-                    </ul>
-                  </div>
-
-                  <div className="mt-3 flex flex-wrap gap-2">
-                    <QuickChip onClick={() => setInput("Mi negocio se llama ____ y quiero automatizar WhatsApp para responder consultas.")}>
-                      WhatsApp
-                    </QuickChip>
-                    <QuickChip onClick={() => setInput("Tengo ____ y quiero automatizar reservas/turnos y confirmaciones.")}>
-                      Reservas
-                    </QuickChip>
-                    <QuickChip onClick={() => setInput("Quiero automatizar ventas: calificar leads, seguimiento y recordatorios.")}>
-                      Ventas
-                    </QuickChip>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-
           {messages.map((m, i) => (
             <Bubble
               key={i}
@@ -385,9 +325,9 @@ export default function EtherCodeAssistantModal({
 
         {/* Composer */}
         <div className="sticky bottom-0 left-0 right-0">
-          <div className="h-4 bg-gradient-to-t from-neutral-950/95 to-transparent" />
-          <div className="px-4 pb-[calc(0.75rem+env(safe-area-inset-bottom))]">
-            <div className="rounded-2xl border border-white/10 bg-neutral-900/90 backdrop-blur p-2 shadow">
+          <div className="h-6 bg-gradient-to-t from-neutral-950/95 to-transparent" />
+          <div className="px-4 pb-[calc(0.85rem+env(safe-area-inset-bottom))]">
+            <div className="rounded-2xl border border-white/10 bg-neutral-900/85 backdrop-blur p-2 shadow-[0_10px_40px_rgba(0,0,0,0.35)]">
               <div className="flex items-end gap-2">
                 <textarea
                   ref={textareaRef}
@@ -395,8 +335,8 @@ export default function EtherCodeAssistantModal({
                   onChange={(e) => setInput(e.target.value)}
                   onKeyDown={handleKeyDown}
                   rows={1}
-                  placeholder="Escribí tu consulta…"
-                  className="flex-1 min-h-[40px] max-h-32 resize-none bg-transparent outline-none px-2 py-2 text-sm leading-5
+                  placeholder="Escribí: nombre del negocio + qué querés automatizar…"
+                  className="flex-1 min-h-[42px] max-h-32 resize-none bg-transparent outline-none px-2 py-2 text-sm leading-5
                              text-neutral-100 placeholder:text-neutral-400 caret-white"
                   aria-label="Tu mensaje"
                 />
@@ -421,12 +361,15 @@ export default function EtherCodeAssistantModal({
                     stroke="currentColor"
                     strokeWidth="2"
                   >
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14M12 5l7 7-7 7" />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M5 12h14M12 5l7 7-7 7"
+                    />
                   </svg>
                 </button>
               </div>
-
-              <div className="px-2 pt-1 flex items-center justify-between gap-3">
+              <div className="px-2 pt-1 flex items-center justify-between">
                 <span className="text-[11px] text-neutral-400">
                   Enter envía • Shift+Enter hace salto de línea
                 </span>
@@ -444,19 +387,6 @@ export default function EtherCodeAssistantModal({
         </div>
       </div>
     </div>
-  );
-}
-
-/* === Quick chips === */
-function QuickChip({ children, onClick }) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      className="text-[12px] rounded-full border border-white/10 bg-white/5 px-3 py-1 text-white/80 hover:bg-white/10"
-    >
-      {children}
-    </button>
   );
 }
 
@@ -491,11 +421,11 @@ function Bubble({ side = "left", children, booking_url, raw = false }) {
 
   const botStyle = {
     background:
-      "conic-gradient(at 10% 10%, rgba(0,245,212,0.18), rgba(0,180,231,0.22), rgba(199,125,255,0.18), rgba(20,22,32,0.85))",
+      "linear-gradient(135deg, rgba(0,180,231,0.18), rgba(199,125,255,0.14), rgba(20,22,32,0.85))",
   };
 
   const userClass =
-    "bg-neutral-900/80 text-white border border-cyan-300/40 shadow-[0_0_24px_rgba(0,180,231,0.18)]";
+    "bg-neutral-900/80 text-white border border-cyan-300/30 shadow-[0_0_24px_rgba(0,180,231,0.14)]";
 
   return (
     <div className={`flex ${isRight ? "justify-end" : "justify-start"}`}>
