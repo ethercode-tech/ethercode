@@ -2,18 +2,17 @@
  * [SEO-01] Redirección 301: www.ethercode.com.ar → ethercode.com.ar
  * Dominio canónico: https://ethercode.com.ar (sin www)
  */
-export function middleware(request) {
-  const url = request.nextUrl;
-  const host = request.headers.get("host") || "";
+import { NextResponse } from "next/server";
 
-  if (host.startsWith("www.")) {
-    const newUrl = new URL(url);
-    newUrl.host = host.replace(/^www\./, "");
-    newUrl.protocol = request.nextUrl.protocol;
-    return Response.redirect(newUrl.toString(), 301);
+export function middleware(request) {
+  const url = request.nextUrl.clone();
+
+  if (url.hostname.startsWith("www.")) {
+    url.hostname = url.hostname.replace(/^www\./, "");
+    return NextResponse.redirect(url, 301);
   }
 
-  return;
+  return NextResponse.next();
 }
 
 export const config = {
