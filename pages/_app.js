@@ -37,21 +37,20 @@ function MyApp({ Component, pageProps }) {
 
       {trackingId ? (
         <>
-          <Script
+         <Script
             id="ga4-src"
-            strategy="afterInteractive"
+            strategy="lazyOnload"
             src={`https://www.googletagmanager.com/gtag/js?id=${trackingId}`}
           />
           <Script
             id="ga4-init"
-            strategy="afterInteractive"
+            strategy="lazyOnload"
             dangerouslySetInnerHTML={{
               __html: `
                 window.dataLayer = window.dataLayer || [];
                 function gtag(){dataLayer.push(arguments);}
                 window.gtag = gtag;
                 gtag('js', new Date());
-                // Evitamos duplicar page_view porque lo mandamos en routeChangeComplete
                 gtag('config', '${trackingId}', { send_page_view: false });
               `,
             }}
