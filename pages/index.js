@@ -115,7 +115,7 @@ const Home = () => {
         <meta property="og:type" content="website" />
 
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:site" content="@ethercode" />
+        <meta name="twitter:site" content="@ethercode_tech" />
         <meta name="twitter:title" content="ÉtherCode | Empleados Digitales con IA" />
         <meta
           name="twitter:description"

@@ -194,7 +194,7 @@ export default function Footer() {
             <h3 className="text-lg font-semibold mb-4">Síguenos</h3>
             <div className="flex mt-2 space-x-5 text-white/90">
               <motion.a
-                href="https://x.com/ethercode"
+                href="https://x.com/ethercode_tech"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="X (Twitter)"
@@ -214,7 +214,7 @@ export default function Footer() {
                 <Linkedin size={28} />
               </motion.a>
               <motion.a
-                href="https://github.com/ethercode"
+                href="https://github.com/ethercode_tech"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="GitHub"
