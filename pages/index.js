@@ -230,9 +230,9 @@ const Home = () => {
 
         {/* 📢 ALTERNATES PARA MULTIPAÍS */}
         <link rel="alternate" href="https://ethercode.com.ar" hrefLang="es-ar" />
-        <link rel="alternate" href="https://www.ethercode.com" hrefLang="es" />
-        <link rel="alternate" href="https://www.ethercode.lat" hrefLang="es-419" />
-        <link rel="alternate" href="https://www.ethercode.com/en" hrefLang="en" />
+        <link rel="alternate" href="https://ethercode.com" hrefLang="es" />
+        <link rel="alternate" href="https://ethercode.lat" hrefLang="es-419" />
+        <link rel="alternate" href="https://ethercode.com/en" hrefLang="en" />
 
         {/* 📊 GOOGLE ANALYTICS Y ADSENSE YA CONFIGURADOS ARRIBA */}
       </Head>
