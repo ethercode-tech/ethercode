@@ -182,7 +182,7 @@ const ChatBot = ({
         )}
 
         {/* Mensajes */}
-        <div className="flex-1 overflow-y-auto px-3 py-4 space-y-3">
+        <div className="flex-1 px-3 py-4 space-y-3">
           {messages.map((msg, idx) => (
             <MessageBubble key={idx} sender={msg.sender}>
               {msg.text}

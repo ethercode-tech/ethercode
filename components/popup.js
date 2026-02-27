@@ -20,7 +20,7 @@ const Popup = ({ showPopup, setShowPopup, onAuditClick }) => {
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-70 z-50">
-      <div className="relative p-6 bg-gray-800 rounded-lg shadow-xl w-11/12 sm:w-3/4 lg:w-2/3 max-h-[90vh] overflow-y-auto flex flex-col md:flex-row md:space-x-4">
+      <div className="relative p-6 bg-gray-800 rounded-lg shadow-xl w-11/12 sm:w-3/4 lg:w-2/3 max-h-[90vh] flex flex-col md:flex-row md:space-x-4">
         
         {/* Botón de cerrar */}
         <button

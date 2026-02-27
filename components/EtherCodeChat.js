@@ -40,7 +40,7 @@ export default function ÉtherCodeChat() {
   return (
     <div className="fixed bottom-4 right-4 w-80 rounded-2xl shadow-xl bg-neutral-900 text-neutral-100 p-3">
       <div className="text-sm font-semibold mb-2">ÉtherCode – Asistente</div>
-      <div className="h-64 overflow-y-auto space-y-2 text-sm">
+      <div className="h-64 space-y-2 text-sm">
         {msgs.map((m, i) => (
           <div key={i} className={m.role === "user" ? "text-right" : "text-left"}>
             <div className={`inline-block px-3 py-2 rounded-xl ${m.role === "user" ? "bg-primary/20" : "bg-white/10"}`}>
