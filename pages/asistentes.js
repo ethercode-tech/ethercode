@@ -1,7 +1,7 @@
 'use client';
 
 import Head from 'next/head';
-import { event as gaEvent } from 'nextjs-google-analytics';
+import { trackEvent, GA_EVENTS } from '../lib/ga';
 import CasosUso from '../components/casosUso';
 import CTAFinal from '../components/ctaFinalPageAsistentes';
 import HeroAutomatizaciones from '../components/heroAutomatizaciones';
@@ -12,9 +12,9 @@ import NavbarIndex from '../components/NavbarIndex';
 
 const PageEmpleadosDigitales = () => {
   const handleCTAClick = () => {
-    gaEvent('cta_empleadoDigital_click', {
-      category: 'CTA',
-      label: 'Empleado Digital - Empezar ahora',
+    trackEvent(GA_EVENTS.CTA_EMPLEADO_DIGITAL_CLICK, {
+      event_category: 'CTA',
+      event_label: 'Empleado Digital - Empezar ahora',
     });
     window.open(
       'https://wa.me/5493884486112?text=Hola!%20Estoy%20interesado%20en%20la%20oferta%20del%20Empleado%20Digital%20🤖',

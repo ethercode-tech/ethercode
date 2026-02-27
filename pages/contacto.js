@@ -3,6 +3,7 @@ import React, { useState, useRef } from "react";
 import { sendContactForm } from "../lib/api";
 import { motion, useInView } from "framer-motion";
 import { ToastContainer, toast } from "react-toastify";
+import { trackEvent, GA_EVENTS } from "../lib/ga";
 import "react-toastify/dist/ReactToastify.css";
 import 'react-phone-input-2/lib/style.css';
 import PhoneInput from 'react-phone-input-2';
@@ -54,15 +55,18 @@ const Contact = () => {
 
   const onSubmit = async () => {
     if (!validateForm()) return;
+    trackEvent(GA_EVENTS.FORM_SUBMIT, { event_category: "Formulario", event_label: "Contacto" });
     try {
       const res = await sendContactForm(values);
       if (res?.ok || res?.status === 200) {
+        trackEvent(GA_EVENTS.FORM_SUBMIT_SUCCESS, { event_category: "Formulario", event_label: "Contacto" });
         toast.success("Mensaje enviado con éxito!");
         setValues(initState);
       } else {
         throw new Error("No se pudo enviar el mensaje.");
       }
     } catch (error) {
+      trackEvent(GA_EVENTS.FORM_SUBMIT_ERROR, { event_category: "Formulario", event_label: "Contacto" });
       console.error(error);
       toast.error("Error al enviar el mensaje. Por favor, inténtalo nuevamente.");
     }

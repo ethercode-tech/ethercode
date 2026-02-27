@@ -51,18 +51,7 @@ class MyDocument extends Document {
           <OrganizationJSONLD />
           <WebsiteJSONLD />
 
-          {/* Google Analytics gtag.js */}
-          <script async src="https://www.googletagmanager.com/gtag/js?id=G-DWNYC03YQH"></script>
-          <script
-            dangerouslySetInnerHTML={{
-              __html: `
-                window.dataLayer = window.dataLayer || [];
-                function gtag(){dataLayer.push(arguments);}
-                gtag('js', new Date());
-                gtag('config', 'G-DWNYC03YQH');
-              `,
-            }}
-          />
+          {/* GA4 se carga en _app.js con NEXT_PUBLIC_GA_TRACKING_ID para evitar duplicado */}
 
           {/* Script de Metricool */}
           <script

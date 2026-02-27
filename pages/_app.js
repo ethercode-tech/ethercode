@@ -8,27 +8,20 @@ import "../css/global.css";
 // import "../lib/i18n";
 import Head from "next/head";
 import Script from "next/script";
+import { trackPageView } from "../lib/ga";
 
 function MyApp({ Component, pageProps }) {
   const router = useRouter();
   const trackingId = process.env.NEXT_PUBLIC_GA_TRACKING_ID;
 
-  // useEffect(() => {
-  //   const handleRouteChange = (url) => {
-  //     if (!trackingId) return;
-
-  //     fetch("/api/analytics", {
-  //       method: "POST",
-  //       headers: { "Content-Type": "application/json" },
-  //       body: JSON.stringify({ trackingId, path: url }),
-  //     }).catch((error) =>
-  //       console.error("Error al enviar datos de Analytics:", error)
-  //     );
-  //   };
-
-  //   router.events.on("routeChangeComplete", handleRouteChange);
-  //   return () => router.events.off("routeChangeComplete", handleRouteChange);
-  // }, [router, trackingId]);
+  // GA4: page_view en cada cambio de ruta (SPA). La primera carga la envía gtag('config').
+  useEffect(() => {
+    const handleRouteChange = (url) => {
+      trackPageView(url, typeof document !== "undefined" ? document.title : "");
+    };
+    router.events.on("routeChangeComplete", handleRouteChange);
+    return () => router.events.off("routeChangeComplete", handleRouteChange);
+  }, [router]);
 
   return (
     <>

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-// import ReactGA from 'react-ga';
 import { CheckCircleIcon } from '@heroicons/react/24/solid';
+import { trackEvent, GA_EVENTS } from '../lib/ga';
 
 const Confirmar = () => {
   const [countdown, setCountdown] = useState(5);
@@ -9,21 +9,16 @@ const Confirmar = () => {
   const { email } = router.query;
 
   useEffect(() => {
-    // const TRACKING_ID = process.env.NEXT_PUBLIC_GA_TRACKING_ID;
-    // ReactGA.initialize(TRACKING_ID);
-
-    // ReactGA.pageview(window.location.pathname + window.location.search);
-    //------------
-    // Enviar un POST a /api/analytics para registrar la vista de esta página
+    const path = typeof window !== "undefined" ? window.location.pathname + window.location.search : "/confirmar";
+    trackEvent(GA_EVENTS.VIEW_CONFIRMAR, { event_category: "Conversión", event_label: "Newsletter confirmado" });
     fetch("/api/analytics", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        path: window.location.pathname + window.location.search,
+        path,
+        trackingId: process.env.NEXT_PUBLIC_GA_TRACKING_ID,
       }),
-    });
+    }).catch(() => {});
 
     const interval = setInterval(() => {
       setCountdown((prevCountdown) => prevCountdown - 1);

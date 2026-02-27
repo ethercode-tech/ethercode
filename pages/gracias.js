@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import { trackEvent, GA_EVENTS } from "../lib/ga";
 
 export default function Gracias() {
   const router = useRouter();
@@ -129,6 +130,9 @@ export default function Gracias() {
           <div className="mt-10 flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
             <a
               href="https://wa.me/5493884486112?text=Hola%20EtherCode%2C%20acabo%20de%20enviar%20una%20consulta%20desde%20la%20web."
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => trackEvent(GA_EVENTS.OUTBOUND_CLICK, { event_category: "CTA", event_label: "Gracias - Ir a WhatsApp" })}
               className="inline-flex items-center justify-center rounded-2xl px-6 py-3 bg-white text-black font-semibold hover:opacity-95"
             >
               Ir a WhatsApp
@@ -136,6 +140,7 @@ export default function Gracias() {
 
             <a
               href="/"
+              onClick={() => trackEvent(GA_EVENTS.NAV_LINK_CLICK, { event_category: "Navegación", event_label: "Gracias - Volver al inicio" })}
               className="inline-flex items-center justify-center rounded-2xl px-6 py-3 border border-white/15 bg-white/5 text-white/90 hover:bg-white/10"
             >
               Volver al inicio

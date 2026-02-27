@@ -25,17 +25,17 @@
 
 export default async function handler(req, res) {
   if (req.method === "POST") {
-    const { trackingId, path } = req.body;
+    const { trackingId: bodyTrackingId, path } = req.body;
+    const trackingId = bodyTrackingId || process.env.NEXT_PUBLIC_GA_TRACKING_ID;
 
-    // Verifica que ambos campos estén presentes
     if (!trackingId || !path) {
       return res
         .status(400)
-        .json({ error: "trackingId and path are required" });
+        .json({ error: "path is required; trackingId or NEXT_PUBLIC_GA_TRACKING_ID must be set" });
     }
 
     try {
-      // Envía los datos de navegación a Google Analytics
+      // Envía los datos de navegación a Google Analytics (Measurement Protocol)
       await fetch(`https://www.google-analytics.com/collect`, {
         method: "POST",
         headers: {

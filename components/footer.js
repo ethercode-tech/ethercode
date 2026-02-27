@@ -8,6 +8,7 @@ import Image from "next/image";
 import Container from "./container";
 import { Link as ScrollLink } from "react-scroll";
 import { motion } from "framer-motion";
+import { trackEvent, GA_EVENTS } from "../lib/ga";
 
 // ==== Icons (SVG puros) ====
 const XIcon = ({ size = 24 }) => (
@@ -200,6 +201,7 @@ export default function Footer() {
                 aria-label="X (Twitter)"
                 whileHover={{ scale: 1.15 }}
                 className="hover:text-cyan-300 transition-colors"
+                onClick={() => trackEvent(GA_EVENTS.SOCIAL_CLICK, { event_category: "Social", event_label: "Footer - X (Twitter)" })}
               >
                 <XIcon size={28} />
               </motion.a>
@@ -210,6 +212,7 @@ export default function Footer() {
                 aria-label="LinkedIn"
                 whileHover={{ scale: 1.15 }}
                 className="hover:text-sky-400 transition-colors"
+                onClick={() => trackEvent(GA_EVENTS.SOCIAL_CLICK, { event_category: "Social", event_label: "Footer - LinkedIn" })}
               >
                 <Linkedin size={28} />
               </motion.a>
@@ -220,6 +223,7 @@ export default function Footer() {
                 aria-label="GitHub"
                 whileHover={{ scale: 1.15 }}
                 className="hover:text-fuchsia-300 transition-colors"
+                onClick={() => trackEvent(GA_EVENTS.SOCIAL_CLICK, { event_category: "Social", event_label: "Footer - GitHub" })}
               >
                 <GitHubIcon size={28} />
               </motion.a>
@@ -230,6 +234,7 @@ export default function Footer() {
                 aria-label="Instagram"
                 whileHover={{ scale: 1.15 }}
                 className="hover:text-pink-300 transition-colors"
+                onClick={() => trackEvent(GA_EVENTS.SOCIAL_CLICK, { event_category: "Social", event_label: "Footer - Instagram" })}
               >
                 <Instagram size={28} />
               </motion.a>
@@ -243,6 +248,7 @@ export default function Footer() {
             href="/blog"
             target="_blank"
             rel="noopener noreferrer"
+            onClick={() => trackEvent(GA_EVENTS.FOOTER_LINK_CLICK, { event_category: "Footer", event_label: "Blog" })}
             className="relative inline-flex items-center justify-center px-8 py-4 text-base font-semibold
                        rounded-2xl shadow-lg transition will-change-transform
                        border border-white/10 bg-white/5 text-white hover:bg-white/10"

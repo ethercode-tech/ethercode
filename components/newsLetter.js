@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { SparklesIcon, EnvelopeIcon } from '@heroicons/react/24/solid';
+import { trackEvent, GA_EVENTS } from '../lib/ga';
 
 const Newsletter = () => {
   const [email, setEmail] = useState('');
@@ -15,6 +16,7 @@ const Newsletter = () => {
       return;
     }
 
+    trackEvent(GA_EVENTS.NEWSLETTER_SUBMIT, { event_category: "Newsletter", event_label: "Home" });
     try {
       const response = await fetch('/api/newsletter', {
         method: 'POST',
@@ -23,14 +25,17 @@ const Newsletter = () => {
       });
 
       if (response.ok) {
+        trackEvent(GA_EVENTS.NEWSLETTER_SUCCESS, { event_category: "Newsletter", event_label: "Home" });
         setSubmitted(true);
         setEmail('');
         setError('');
       } else {
         const data = await response.json();
+        trackEvent(GA_EVENTS.NEWSLETTER_ERROR, { event_category: "Newsletter", event_label: data?.error || "Error" });
         setError(data.error || 'Error al suscribirse.');
       }
     } catch (err) {
+      trackEvent(GA_EVENTS.NEWSLETTER_ERROR, { event_category: "Newsletter", event_label: "Network error" });
       setError('Error al enviar la solicitud. Inténtalo de nuevo más tarde.');
     }
   };

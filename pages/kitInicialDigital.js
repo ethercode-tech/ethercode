@@ -1,7 +1,7 @@
 'use client';
 
 import Head from 'next/head';
-import { event as gaEvent } from 'nextjs-google-analytics';
+import { trackEvent, GA_EVENTS } from '../lib/ga';
 import HeroKitInicial from '../components/kitInicialDigital/HeroKitInicial';
 import BeneficiosKit from '../components/kitInicialDigital/beneficiosKit';
 import DetallesKit from '../components/kitInicialDigital/detallesKit';
@@ -10,7 +10,7 @@ import CTAFinal from '../components/kitInicialDigital/CTAFinal';
 
 const PageKitInicial = () => {
   const handleCTAClick = () => {
-    gaEvent('cta_kitInicial_click', { category: 'CTA', label: 'Kit Inicial - Empezar ahora' });
+    trackEvent(GA_EVENTS.CTA_KIT_INICIAL_CLICK, { event_category: 'CTA', event_label: 'Kit Inicial - Empezar ahora' });
     window.open('https://wa.me/5493884486112?text=Hola!%20Estoy%20interesado%20en%20el%20Kit%20Presencia%20Online%20de%20ÉtherCode%20💻', '_blank');
   };
 

@@ -3,7 +3,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import { event as gaEvent } from "nextjs-google-analytics";
+import { trackEvent, GA_EVENTS } from "../lib/ga";
 import { motion, useReducedMotion } from "framer-motion";
 
 const WAPP_NUMBER = "+5493884486112";
@@ -37,9 +37,9 @@ export default function ChatWhatsapp() {
 
   const openWA = (extra = "") => {
     const href = buildWaUrl(extra, origin);
-    gaEvent("cta_whatsapp_click", {
-      category: "CTA",
-      label: extra ? `QuickReply: ${extra}` : "Bubble click",
+    trackEvent(GA_EVENTS.CTA_WHATSAPP_CLICK, {
+      event_category: "CTA",
+      event_label: extra ? `QuickReply: ${extra}` : "Bubble click",
     });
     window.open(href, "_blank");
   };
@@ -89,9 +89,9 @@ export default function ChatWhatsapp() {
         <button
           onClick={() => {
             setShowPanel((v) => !v);
-            gaEvent("cta_whatsapp_bubble_toggle", {
-              category: "CTA",
-              label: "Toggle panel",
+            trackEvent(GA_EVENTS.CTA_WHATSAPP_BUBBLE_TOGGLE, {
+              event_category: "CTA",
+              event_label: "Toggle panel",
             });
           }}
           aria-label="Chatear por WhatsApp"

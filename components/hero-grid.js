@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import { motion, AnimatePresence } from "framer-motion";
-import { event } from "nextjs-google-analytics";
+import { trackEvent, GA_EVENTS } from "../lib/ga";
 import { useEffect, useMemo, useState } from "react";
 import EtherCodeAssistantModal from "../components/EtherCodeAssistantModal";
 import Container from "./container";
@@ -50,12 +50,12 @@ export default function HeroGrid(){
   const phraseKey = useMemo(() => `${idx}-${PHRASES[idx]}`,[idx]);
 
   const handleRedirect = () => {
-    event("cta_click", { category: "engagement", label: "Quiero conocer a mi futuro empleado digital" });
+    trackEvent(GA_EVENTS.CTA_CLICK, { event_category: "engagement", event_label: "Quiero conocer a mi futuro empleado digital" });
     router.push("/asistentes");
   };
 
   const handleOpenAssistant = () => {
-    event("cta_click", { category: "engagement", label: "Probar ahora (modal asistente)" });
+    trackEvent(GA_EVENTS.CTA_CLICK, { event_category: "engagement", event_label: "Probar ahora (modal asistente)" });
     setIsOpen(true);
   };
 

@@ -5,6 +5,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import { trackEvent, GA_EVENTS } from '../../lib/ga';
 
 export default function CTAFinal() {
   return (
@@ -73,15 +74,7 @@ export default function CTAFinal() {
           }}
           whileTap={{ scale: 0.97 }}
           transition={{ duration: 0.25, ease: 'easeInOut' }}
-          onClick={() => {
-            if (typeof window !== 'undefined' && 'gtag' in window) {
-              // @ts-ignore
-              window.gtag('event', 'cta_agendar_click', {
-                event_category: 'CTA',
-                event_label: 'CTA Kit Digital',
-              });
-            }
-          }}
+          onClick={() => trackEvent(GA_EVENTS.CTA_AGENDAR_CLICK, { event_category: 'CTA', event_label: 'CTA Kit Digital' })}
           className="inline-block bg-gradient-to-r from-[#00F5D4] via-[#00B4E7] to-[#C77DFF] 
                      hover:from-[#72D7FF] hover:to-[#C77DFF] 
                      text-black font-extrabold text-lg sm:text-xl py-4 px-10 

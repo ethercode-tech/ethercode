@@ -3,6 +3,7 @@
 import Head from "next/head";
 import { useState } from "react";
 import { sendContactForm } from "../lib/api";
+import { trackEvent, GA_EVENTS } from "../lib/ga";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { SectionComoFunciona } from "../components/asistentes-inteligentes/SectionComoFunciona";
@@ -50,7 +51,7 @@ const PageAsistentesIA = () => {
     e.preventDefault();
     if (!validateForm()) return;
     setIsSubmitting(true);
-    window.gtag?.("event", "enviar_consulta", {
+    trackEvent(GA_EVENTS.ENVIAR_CONSULTA, {
       event_category: "Formulario",
       event_label: "Formulario Contacto IA",
     });
@@ -127,7 +128,7 @@ const PageAsistentesIA = () => {
           <a
             href="#contacto"
             onClick={() =>
-              window.gtag?.("event", "click_demo", {
+              trackEvent(GA_EVENTS.CLICK_DEMO, {
                 event_category: "Botón",
                 event_label: "Solicitá tu Demo",
               })
