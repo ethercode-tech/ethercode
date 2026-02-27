@@ -122,12 +122,12 @@ const FabricaSoft = () => {
         <meta property="og:image" content="/img-logo/logonombre.png" />
         <meta
           property="og:url"
-          content="https://www.ethercode.com.ar/fabricaSoft"
+          content="https://ethercode.com.ar/fabricaSoft"
         />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:image" content="/img-logo/logonombre.png" />
         <link rel="icon" href="/img-logo/ethercode-isotipo-turquoise-hd.ico" />
-        <link rel="canonical" href="https://www.ethercode.com.ar/fabricaSoft" />
+        <link rel="canonical" href="https://ethercode.com.ar/fabricaSoft" />
       </Head>
 
       {/* LAYOUT + FONDO COHERENTE ÉtherCode */}

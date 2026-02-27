@@ -33,8 +33,8 @@ const PageKitInicial = () => {
           property="og:description"
           content="Lanzá tu presencia digital con ÉtherCode: diseño web, dominio, hosting y posicionamiento en Google. Solo 200 USD. En 7 días."
         />
-        <meta property="og:image" content="https://www.ethercode.com.ar/img/logoKitInicial.png" />
-        <meta property="og:url" content="https://www.ethercode.com.ar/kitinicial" />
+        <meta property="og:image" content="https://ethercode.com.ar/img/logoKitInicial.png" />
+        <meta property="og:url" content="https://ethercode.com.ar/kitinicial" />
 
         {/* Twitter Card */}
         <meta name="twitter:card" content="summary_large_image" />
@@ -43,10 +43,10 @@ const PageKitInicial = () => {
           name="twitter:description"
           content="¿Todavía no estás en Google? Este kit incluye todo lo que necesitás para mostrar tu negocio online. ¡Consultá ahora!"
         />
-        <meta name="twitter:image" content="https://www.ethercode.com.ar/img/logoKitInicial.png" />
+        <meta name="twitter:image" content="https://ethercode.com.ar/img/logoKitInicial.png" />
 
         {/* Canonical */}
-        <link rel="canonical" href="https://www.ethercode.com.ar/kitInicialDigital" />
+        <link rel="canonical" href="https://ethercode.com.ar/kitInicialDigital" />
         <link rel="icon" href="/img-logo/ethercode-isotipo-turquoise-hd.ico" />
 
         {/* Structured Data JSON-LD */}
@@ -55,7 +55,7 @@ const PageKitInicial = () => {
             "@context": "https://schema.org",
             "@type": "Product",
             name: "Kit Presencia Online",
-            image: "https://www.ethercode.com.ar/img/logoKitInicial.png",
+            image: "https://ethercode.com.ar/img/logoKitInicial.png",
             description: "Kit digital para lanzar tu negocio en Internet. Incluye sitio web profesional, dominio .com.ar, hosting, certificado SSL y posicionamiento SEO básico.",
             brand: {
               "@type": "Organization",
@@ -66,7 +66,7 @@ const PageKitInicial = () => {
               priceCurrency: "USD",
               price: "200",
               availability: "https://schema.org/InStock",
-              url: "https://www.ethercode.com.ar/kitInicialDigital"
+              url: "https://ethercode.com.ar/kitInicialDigital"
             }
           })
         }} />

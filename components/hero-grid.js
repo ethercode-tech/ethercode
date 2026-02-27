@@ -1,4 +1,4 @@
-import { useRouter } from "next/router";
+import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { trackEvent, GA_EVENTS } from "../lib/ga";
 import { useEffect, useMemo, useState } from "react";
@@ -37,7 +37,6 @@ const PHRASES = [
 ];
 
 export default function HeroGrid(){
-  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [idx, setIdx] = useState(0);
 
@@ -48,11 +47,6 @@ export default function HeroGrid(){
   }, []);
 
   const phraseKey = useMemo(() => `${idx}-${PHRASES[idx]}`,[idx]);
-
-  const handleRedirect = () => {
-    trackEvent(GA_EVENTS.CTA_CLICK, { event_category: "engagement", event_label: "Quiero conocer a mi futuro empleado digital" });
-    router.push("/asistentes");
-  };
 
   const handleOpenAssistant = () => {
     trackEvent(GA_EVENTS.CTA_CLICK, { event_category: "engagement", event_label: "Probar ahora (modal asistente)" });
@@ -134,15 +128,21 @@ export default function HeroGrid(){
 
             {/* CTAs con borde-luz y hover con gradiente */}
             <div className="mt-2 grid w-full max-w-2xl grid-cols-1 gap-4 sm:auto-cols-max sm:grid-flow-col">
-              <button
-                onClick={handleRedirect}
+              <Link
+                href="/asistentes"
+                onClick={() =>
+                  trackEvent(GA_EVENTS.CTA_CLICK, {
+                    event_category: "engagement",
+                    event_label: "Quiero conocer a mi futuro empleado digital",
+                  })
+                }
                 className="relative w-full sm:w-auto inline-flex items-center justify-center rounded-2xl px-6 py-3.5 min-h-[52px] text-white
                 bg-white/10 backdrop-blur-md border border-white/20 ring-1 ring-white/10
                 shadow-lg shadow-black/10 hover:bg-white/20 active:bg-white/25 transition"
               >
                 <span className="absolute inset-0 rounded-2xl opacity-40 blur-md -z-10 [background:conic-gradient(from_140deg_at_50%_50%,_#22d3ee33,_#e879f933,_#6366f133,_#22d3ee33)]" />
                 ⚡ Conocer mi empleado digital
-              </button>
+              </Link>
 
               <button
                 onClick={handleOpenAssistant}

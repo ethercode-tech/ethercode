@@ -1,10 +1,9 @@
 import React, { useEffect } from 'react';
 import Image from 'next/image';
-import { useRouter } from 'next/router'; // Para redireccionar
+import Link from 'next/link';
 import adsImg from '../public/auditoriaSoftwarePopup.jpeg';
 
 const Popup = ({ showPopup, setShowPopup, onAuditClick }) => {
-  const router = useRouter(); // Inicializa router para la redirección
 
   useEffect(() => {
     if (!showPopup) return;
@@ -18,11 +17,6 @@ const Popup = ({ showPopup, setShowPopup, onAuditClick }) => {
   }, [showPopup]);
 
   if (!showPopup) return null;
-
-  const handleRedirect = () => {
-    setShowPopup(false); // Cierra el popup
-    router.push('/auditoria'); // Redirige a la página de contacto
-  };
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-70 z-50">
@@ -88,12 +82,13 @@ const Popup = ({ showPopup, setShowPopup, onAuditClick }) => {
             >
               Cerrar
             </button>
-            <button
-              onClick={handleRedirect}
+            <Link
+              href="/auditoria"
+              onClick={() => setShowPopup(false)}
               className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-transform transform hover:scale-105"
             >
               Sí, Auditar mi Web
-            </button>
+            </Link>
           </div>
         </div>
       </div>

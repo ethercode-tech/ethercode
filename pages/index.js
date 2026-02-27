@@ -94,7 +94,7 @@ const Home = () => {
         />
 
         {/* 🌍 CANONICAL Y LOCALIZACIÓN */}
-        <link rel="canonical" href="https://www.ethercode.com.ar" />
+        <link rel="canonical" href="https://ethercode.com.ar" />
         <meta name="robots" content="index, follow" />
         <meta name="author" content="ÉtherCode" />
         <meta name="language" content="es" />
@@ -110,7 +110,7 @@ const Home = () => {
           content="Tu negocio nunca se detiene. ÉtherCode crea empleados digitales impulsados por IA que automatizan tareas, ventas y atención al cliente 24/7."
         />
         <meta property="og:image" content="https://ethercode.com.ar/img-logo/logonombre.png" />
-        <meta property="og:url" content="https://www.ethercode.com.ar" />
+        <meta property="og:url" content="https://ethercode.com.ar" />
         <meta property="og:site_name" content="ÉtherCode" />
         <meta property="og:type" content="website" />
 
@@ -137,7 +137,7 @@ const Home = () => {
               "@context": "https://schema.org",
               "@type": "Organization",
               "name": "ÉtherCode",
-              "url": "https://www.ethercode.com.ar",
+              "url": "https://ethercode.com.ar",
               "logo": "https://ethercode.com.ar/img-logo/logonombre.png",
               "sameAs": [
                 "https://www.instagram.com/ethercode",
@@ -189,7 +189,7 @@ const Home = () => {
               "provider": {
                 "@type": "Organization",
                 "name": "ÉtherCode",
-                "url": "https://www.ethercode.com.ar"
+                "url": "https://ethercode.com.ar"
               },
               "areaServed": "Argentina y Latinoamérica",
               "description":
@@ -198,7 +198,7 @@ const Home = () => {
                 "@type": "Offer",
                 "priceCurrency": "USD",
                 "availability": "https://schema.org/InStock",
-                "url": "https://www.ethercode.com.ar/servicios"
+                "url": "https://ethercode.com.ar/servicios"
               }
             }),
           }}
@@ -212,10 +212,10 @@ const Home = () => {
               "@context": "https://schema.org",
               "@type": "BreadcrumbList",
               "itemListElement": [
-                { "@type": "ListItem", position: 1, name: "Inicio", item: "https://www.ethercode.com.ar" },
+                { "@type": "ListItem", position: 1, name: "Inicio", item: "https://ethercode.com.ar" },
                 { "@type": "ListItem", position: 2, name: "Asistentes Digitales", item: "https://ethercode.com.ar/asistentes" },
                 { "@type": "ListItem", position: 2, name: "Kit digital Inicial", item: "https://ethercode.com.ar/kitInicialDigital" },
-                { "@type": "ListItem", position: 3, name: "Software Factory", item: "https://www.ethercode.com.ar/fabricaSoft" }
+                { "@type": "ListItem", position: 3, name: "Software Factory", item: "https://ethercode.com.ar/fabricaSoft" }
               ]
             }),
           }}
@@ -229,7 +229,7 @@ const Home = () => {
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 
         {/* 📢 ALTERNATES PARA MULTIPAÍS */}
-        <link rel="alternate" href="https://www.ethercode.com.ar" hrefLang="es-ar" />
+        <link rel="alternate" href="https://ethercode.com.ar" hrefLang="es-ar" />
         <link rel="alternate" href="https://www.ethercode.com" hrefLang="es" />
         <link rel="alternate" href="https://www.ethercode.lat" hrefLang="es-419" />
         <link rel="alternate" href="https://www.ethercode.com/en" hrefLang="en" />

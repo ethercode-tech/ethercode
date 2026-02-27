@@ -8,7 +8,7 @@ const WebsiteJSONLD = () => (
       __html: JSON.stringify({
         "@context": "https://schema.org",
         "@type": "WebSite",
-        url: "https://www.ethercode.com.ar",
+        url: "https://ethercode.com.ar",
         name: "ÉtherCode",
         description:
           "Desarrollamos software a medida, aplicaciones móviles y soluciones tecnológicas innovadoras para tu negocio.",
@@ -18,7 +18,7 @@ const WebsiteJSONLD = () => (
         },
         potentialAction: {
           "@type": "SearchAction",
-          target: "https://www.ethercode.com.ar?q={search_term_string}",
+          target: "https://ethercode.com.ar?q={search_term_string}",
           "query-input": "required name=search_term_string",
         },
       }),

@@ -1,6 +1,6 @@
 import Container from "./container";
 import { css } from "@emotion/react";
-import { useRouter } from "next/router";
+import Link from "next/link";
 
 const modalStyles = {
   content: {
@@ -42,8 +42,6 @@ const buttonStyles = css`
 `;
 
 const Cta = () => {
-  const router = useRouter();
-
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [formData, setFormData] = useState({
     nombre: "",
@@ -54,10 +52,6 @@ const Cta = () => {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
-  };
-
-  const handleContactButtonClick = () => {
-    router.push("/contact");
   };
 
   const handleModalClose = () => {
@@ -82,12 +76,12 @@ const Cta = () => {
           </p>
         </div>
         <div className="flex-shrink-0 w-full text-center lg:w-auto">
-          <button
-            onClick={handleContactButtonClick}
+          <Link
+            href="/contact"
             className="inline-block py-3 mx-auto text-lg font-medium text-center text-[#4888CD] bg-white rounded-md px-7 lg:px-10 lg:py-5"
           >
             Contáctanos
-          </button>
+          </Link>
         </div>
       </div>
     </Container>

@@ -1,13 +1,11 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import Container from "../container";
 
 export default function SectionCTAFinal() {
-  const router = useRouter();
 
   return (
     <section className="bg-gradient-to-r from-[#0A0F2C] to-[#3F8CFF] py-16 px-6 text-center">
@@ -46,9 +44,9 @@ export default function SectionCTAFinal() {
             Pedinos una demo personalizada y empezá a ahorrar tiempo desde hoy.
           </p>
 
-          {/* Botón CTA */}
-          <motion.button
-            onClick={() => router.push("#contacto")}
+          {/* Botón CTA (como enlace ancla rastreable) */}
+          <motion.a
+            href="#contacto"
             animate={{ y: [0, -10, 0] }} // movimiento suave de "flotación"
             transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
             whileHover={{
@@ -57,10 +55,10 @@ export default function SectionCTAFinal() {
               boxShadow: "0 0 20px #ffffff70",
               transition: { duration: 0.3 },
             }}
-            className="bg-white text-[#0A0F2C] font-semibold px-6 py-3 rounded-xl shadow-lg transition-all"
+            className="inline-block bg-white text-[#0A0F2C] font-semibold px-6 py-3 rounded-xl shadow-lg transition-all"
           >
             Quiero mi asistente ahora
-          </motion.button>
+          </motion.a>
         </motion.div>
       </Container>
     </section>

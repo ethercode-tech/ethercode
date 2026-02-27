@@ -9,8 +9,8 @@ const OrganizationJSONLD = () => (
         "@context": "https://schema.org",
         "@type": "Organization",
         name: "ÉtherCode",
-        url: "https://www.ethercode.com.ar",
-        logo: "https://www.ethercode.com.ar/img-logo/logonombre.png",
+        url: "https://ethercode.com.ar",
+        logo: "https://ethercode.com.ar/img-logo/logonombre.png",
         description:
           "ÉtherCode ofrece soluciones tecnológicas innovadoras para impulsar tu negocio.",
         contactPoint: {

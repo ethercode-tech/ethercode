@@ -14,7 +14,7 @@ const Terms = () => {
         />
         <meta name="robots" content="noindex, nofollow" />
         <link rel="icon" href="/img-logo/ethercode-isotipo-turquoise-hd.ico" />
-        <link rel="canonical" href="https://www.ethercode.com.ar/terms" />
+        <link rel="canonical" href="https://ethercode.com.ar/terms" />
       </Head>
       <Navbar />
       <Container>

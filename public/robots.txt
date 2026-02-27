@@ -3,7 +3,7 @@ User-agent: *
 Allow: /
 
 # Host
-Host: https://www.ethercode.com.ar
+Host: https://ethercode.com.ar
 
 # Sitemaps
-Sitemap: https://www.ethercode.com.ar/sitemap.xml
+Sitemap: https://ethercode.com.ar/sitemap.xml

@@ -56,7 +56,7 @@ const PageEmpleadosDigitales = () => {
         />
         <meta
           property="og:url"
-          content="https://www.ethercode.com.ar/asistentes"
+          content="https://ethercode.com.ar/asistentes"
         />
 
         <meta name="twitter:card" content="summary_large_image" />
@@ -75,7 +75,7 @@ const PageEmpleadosDigitales = () => {
 
         <link
           rel="canonical"
-          href="https://www.ethercode.com.ar/asistentes"
+          href="https://ethercode.com.ar/asistentes"
         />
         <link rel="icon" href="/img-logo/ethercode-isotipo-turquoise-hd.ico" />
 
@@ -94,14 +94,14 @@ const PageEmpleadosDigitales = () => {
               "@type": "WebPage",
               "name": "Empleados Digitales con IA para empresas | ÉtherCode",
               "description": "ÉtherCode desarrolla empleados digitales para automatizar tareas, mejorar atención al cliente y aumentar la eficiencia empresarial con IA.",
-              "url": "https://www.ethercode.com.ar/asistentes",
+              "url": "https://ethercode.com.ar/asistentes",
               "publisher": {
                 "@type": "Organization",
                 "name": "ÉtherCode",
-                "url": "https://www.ethercode.com.ar",
+                "url": "https://ethercode.com.ar",
                 "logo": {
                   "@type": "ImageObject",
-                  "url": "https://www.ethercode.com.ar/img-logo/logonombre.png"
+                  "url": "https://ethercode.com.ar/img-logo/logonombre.png"
                 }
               }
             }
