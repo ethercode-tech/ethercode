@@ -2,7 +2,6 @@
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { Inter } from "next/font/google";
-import "../css/tailwind.css";
 import "../css/global.css";
 import Head from "next/head";
 import Script from "next/script";
