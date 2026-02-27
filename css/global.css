@@ -17,6 +17,7 @@
   animation: marquee 15s linear infinite;
 }
 
+
 @keyframes blink {
   0%, 100% {
     opacity: 1;
@@ -29,11 +30,15 @@
 /* ========== BASE ========= */
 
 @layer base {
+  
+  
   html, body {
     overflow-x: hidden;
-    scroll-behavior: smooth;
   }
-
+  body {
+    overscroll-behavior-y: none;
+  }
+  
   h1, h2, h3, h4, h5, h6 {
     @apply text-primaryText font-bold;
   }
