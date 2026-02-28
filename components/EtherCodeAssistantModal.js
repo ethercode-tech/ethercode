@@ -34,7 +34,7 @@ export default function ÉtherCodeAssistantModal({
 
   const whatsappHref = useMemo(() => {
     const msg = encodeURIComponent(
-      "Hola EtherCode, estaba probando a Nexo desde la web y quiero avanzar con un Empleado Digital para mi negocio."
+      "Hola EtherCode, estaba probando a Macak desde la web y quiero avanzar con un Empleado Digital para mi negocio."
     );
     return `https://wa.me/5493884486112?text=${msg}`;
   }, []);
@@ -74,7 +74,7 @@ export default function ÉtherCodeAssistantModal({
             {
               sender: "bot",
               text:
-                "Hola, soy Nexo 🧠, el asistente de ventas de ÉtherCode.\n\nPara ayudarte rápido, decime 2 cosas:\n1) ¿Cual es el rubro de tu negocio?\n2) ¿Qué querés automatizar primero: WhatsApp, reservas o ventas?\n\nSi querés que te contactemos, dejá tu WhatsApp o email.",
+                "Para avanzar rápido, indicá:\n\n1) Rubro de tu negocio\n2) Qué querés automatizar primero (WhatsApp, reservas, ventas, soporte u otro proceso)\n\nSi ya querés que te contactemos directamente, dejá tu WhatsApp con característica o tu email.",
             },
           ]
     );
@@ -277,7 +277,7 @@ export default function ÉtherCodeAssistantModal({
               </div>
               <div>
                 <div className="font-semibold leading-none">
-                  {title} — Nexo
+                  {title} — Macak
                 </div>
                 <div className="text-[11px] opacity-95 flex items-center gap-2">
                   <span className="inline-block w-2 h-2 rounded-full bg-emerald-300 animate-pulse" />
