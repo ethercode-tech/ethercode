@@ -80,6 +80,7 @@
     /* Fondo oscuro global */
     @apply dark:bg-[#111827];
     overflow-x: hidden;
+    overflow-y: auto;
   }
 
   /* Evita saltos/efecto raro de scrollbars en algunos entornos */
