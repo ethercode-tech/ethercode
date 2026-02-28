@@ -10,11 +10,11 @@ const EtherCodeAssistantModal = dynamic(
   { ssr: false }
 );
 
-// Copy simple y directo (sin frases rotando)
+// Copy optimizado: pérdida + urgencia
 const BULLETS = [
-  "Responde consultas al instante, 24/7",
-  "Filtra y ordena interesados (leads)",
-  "Agenda, deriva y hace seguimiento",
+  "Si tardás en responder, el cliente se va con otro",
+  "El asistente responde ya, califica y ordena el lead",
+  "Vos solo entrás a cerrar, no a remar chats",
 ];
 
 export default function HeroGrid() {
@@ -37,11 +37,11 @@ export default function HeroGrid() {
 
   const jsonMicro = useMemo(
     () => ({
-      badge: "IA práctica para ventas y atención",
-      titleA: "Un asistente que atiende",
-      titleB: "y vende por vos",
+      badge: "Menos chats perdidos, más ventas cerradas",
+      titleA: "Dejá de perder",
+      titleB: "clientes por demora",
       sub:
-        "Mientras vos trabajás, tu asistente responde, ordena consultas y no deja que se enfríen oportunidades.",
+        "La mayoría de las ventas se pierden por una cosa simple: responder tarde. Tu asistente atiende al instante, guía al cliente y te deja el contacto listo para cerrar.",
     }),
     []
   );
@@ -50,8 +50,6 @@ export default function HeroGrid() {
     <section
       className="relative w-full bg-transparent pt-24 sm:pt-28 pb-12 min-h-[calc(100vh-4rem)] md:min-h-[calc(100vh-5rem)]"
       style={{
-        // Evitamos “efectos caros” sobre el texto (LCP)
-        // Fondo con gradientes suaves, sin blur gigante animado.
         background:
           "radial-gradient(1200px 600px at 50% 20%, rgba(63,140,255,.20), transparent 55%), radial-gradient(900px 520px at 20% 70%, rgba(0,245,212,.14), transparent 55%), radial-gradient(900px 520px at 80% 75%, rgba(199,125,255,.12), transparent 55%)",
       }}
@@ -71,7 +69,7 @@ export default function HeroGrid() {
             <span>{jsonMicro.badge}</span>
           </div>
 
-          {/* H1: SIN sombras caras, SIN animaciones */}
+          {/* H1 */}
           <h1 className="font-extrabold leading-tight tracking-tight text-white text-4xl sm:text-5xl lg:text-6xl mb-4 max-w-2xl">
             {jsonMicro.titleA}{" "}
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-300 via-fuchsia-300 to-indigo-300">
@@ -79,12 +77,12 @@ export default function HeroGrid() {
             </span>
           </h1>
 
-          {/* Subcopy simple */}
+          {/* Subcopy */}
           <p className="mb-6 text-base sm:text-lg lg:text-xl text-white/85 max-w-xl">
             {jsonMicro.sub}
           </p>
 
-          {/* bullets cortos (claridad = conversión) */}
+          {/* bullets */}
           <ul className="mb-7 space-y-2 text-sm sm:text-base text-white/75">
             {BULLETS.map((t) => (
               <li key={t} className="flex items-start gap-2">
@@ -108,7 +106,7 @@ export default function HeroGrid() {
               bg-white/10 border border-white/20 ring-1 ring-white/10
               shadow-lg shadow-black/10 hover:bg-white/20 active:bg-white/25 transition"
             >
-              Ver cómo funciona
+              Ver el sistema en acción
             </Link>
 
             <button
@@ -120,11 +118,11 @@ export default function HeroGrid() {
               border border-white/20 ring-1 ring-white/30 shadow-lg shadow-black/10 transition
               hover:from-cyan-500/35 hover:via-fuchsia-500/35 hover:to-indigo-500/35 hover:ring-white/40 active:scale-[0.99]"
             >
-              Probar demo ahora
+              Probar y ver cómo responde
             </button>
 
             <a
-              href="https://wa.me/5493884486112?text=Hola!%20Quiero%20un%20asistente%20para%20mi%20negocio.%20%C2%BFC%C3%B3mo%20funciona%20y%20cu%C3%A1nto%20sale%3F"
+              href="https://wa.me/5493884486112?text=Hola!%20Estoy%20perdiendo%20consultas%20por%20demora.%20Quiero%20un%20asistente%20que%20atienda%20al%20instante.%20%C2%BFC%C3%B3mo%20funciona%20y%20cu%C3%A1nto%20sale%3F"
               target="_blank"
               rel="noopener noreferrer"
               onClick={handleWhatsApp}
@@ -135,12 +133,12 @@ export default function HeroGrid() {
             </a>
           </div>
 
-          {/* micro confianza, sin números inventados */}
+          {/* micro confianza */}
           <div className="mt-5 flex flex-wrap items-center gap-2 text-xs text-white/70">
             {[
-              "Implementación rápida",
+              "Implementación rápida, sin fricción",
               "WhatsApp + Web + Instagram",
-              "Entrena con tu info (menú, precios, servicios)",
+              "Entrenado con tu info real, no genérico",
             ].map((t) => (
               <span
                 key={t}
@@ -153,29 +151,36 @@ export default function HeroGrid() {
           </div>
         </div>
 
-        {/* RIGHT: panel simple y liviano, sin animaciones infinitas */}
+        {/* RIGHT */}
         <div className="relative">
           <div className="relative mx-auto max-w-md rounded-3xl p-5 border border-white/10 bg-white/5 shadow-2xl">
             <div className="mb-4 flex items-center justify-between">
               <div className="text-sm text-white/75">Asistente ÉtherCode</div>
               <div className="flex items-center gap-1">
                 <span className="h-2 w-2 rounded-full bg-emerald-400" />
-                <span className="text-xs text-emerald-300/80">Listo para ayudarte</span>
+                <span className="text-xs text-emerald-300/80">Responde en el momento</span>
               </div>
             </div>
 
             <div className="grid grid-cols-1 gap-3">
               <div className="rounded-2xl border border-white/10 bg-white/10 p-4">
-                <div className="text-xs text-white/60">Qué hace</div>
+                <div className="text-xs text-white/60">El problema</div>
                 <div className="mt-1 text-sm text-white/85">
-                  Responde preguntas, guía al cliente y deja todo ordenado para que cierres más fácil.
+                  Cuando un cliente pregunta y nadie responde, no espera. Se va y compra en otro lado.
                 </div>
               </div>
 
               <div className="rounded-2xl border border-white/10 bg-white/10 p-4">
-                <div className="text-xs text-white/60">Ejemplos típicos</div>
+                <div className="text-xs text-white/60">La solución</div>
+                <div className="mt-1 text-sm text-white/85">
+                  El asistente contesta, guía y califica al cliente. Vos recibís el lead ordenado y con intención clara.
+                </div>
+              </div>
+
+              <div className="rounded-2xl border border-white/10 bg-white/10 p-4">
+                <div className="text-xs text-white/60">Preguntas típicas</div>
                 <div className="mt-2 flex flex-wrap gap-2">
-                  {["Precios y servicios", "Horarios", "Reservas", "Seguimiento"].map((t) => (
+                  {["Precios", "Servicios", "Horarios", "Reservas", "Seguimiento"].map((t) => (
                     <span
                       key={t}
                       className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-[11px] text-white/80"
@@ -187,18 +192,13 @@ export default function HeroGrid() {
                   ))}
                 </div>
               </div>
-
-              <div className="rounded-2xl border border-white/10 bg-white/10 p-4">
-                <div className="text-xs text-white/60">Ideal para</div>
-                <div className="mt-1 text-sm text-white/85">
-                  Negocios con muchas consultas por WhatsApp, Instagram o la web.
-                </div>
-              </div>
             </div>
 
             <div className="mt-4 flex items-center justify-between text-xs text-white/60">
               <span>Personalizado a tu rubro</span>
-              <span className="rounded-full border border-white/10 bg-white/5 px-2 py-0.5">Soporte incluido</span>
+              <span className="rounded-full border border-white/10 bg-white/5 px-2 py-0.5">
+                Soporte incluido
+              </span>
             </div>
           </div>
         </div>
