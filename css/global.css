@@ -80,16 +80,30 @@
     /* Fondo oscuro global */
     @apply dark:bg-[#111827];
     overflow-x: hidden;
-    overflow-y: auto;
+
+    /* IMPORTANTE: no bloquees el scroll vertical */
+    overflow-y: visible;
   }
 
-  /* Evita saltos/efecto raro de scrollbars en algunos entornos */
   html {
+    /* Evita saltos/efecto raro de scrollbars en algunos entornos */
     scrollbar-gutter: stable;
+
+    /* iOS: mejora el comportamiento con 100vh y gestos */
+    height: -webkit-fill-available;
   }
 
   body {
-    overscroll-behavior-y: none;
+    /* El scroll real vive acá */
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+
+    /* iOS: hace el scroll “nativo”, evita sensación de trabado */
+    -webkit-overflow-scrolling: touch;
+
+    /* No bloquees el gesto de scroll */
+    overscroll-behavior-y: auto;
+    touch-action: pan-y;
   }
 
   h1,
