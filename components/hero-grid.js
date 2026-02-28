@@ -92,8 +92,8 @@ export default function HeroGrid() {
             ))}
           </ul>
 
-          {/* CTAs */}
-          <div className="mt-1 grid w-full max-w-2xl grid-cols-1 gap-4 sm:auto-cols-max sm:grid-flow-col">
+          {/* CTAs (fix desktop layout + menor altura) */}
+          <div className="mt-1 flex w-full max-w-2xl flex-col gap-3 sm:flex-row sm:items-center">
             <Link
               href="/asistentes"
               onClick={() =>
@@ -102,23 +102,25 @@ export default function HeroGrid() {
                   event_label: "Ver como funciona (asistentes)",
                 })
               }
-              className="w-full sm:w-auto inline-flex items-center justify-center rounded-2xl px-6 py-3.5 min-h-[52px] text-white
-              bg-white/10 border border-white/20 ring-1 ring-white/10
+              className="w-full sm:flex-1 inline-flex items-center justify-center rounded-2xl
+              px-5 py-2.5 text-sm sm:text-[15px] leading-none whitespace-nowrap
+              text-white bg-white/10 border border-white/20 ring-1 ring-white/10
               shadow-lg shadow-black/10 hover:bg-white/20 active:bg-white/25 transition"
             >
-              Ver el sistema en acción
+              Cómo funciona
             </Link>
 
             <button
               type="button"
               onClick={handleOpenAssistant}
               aria-label="Probar demo del asistente"
-              className="w-full sm:w-auto inline-flex items-center justify-center rounded-2xl px-6 py-3.5 min-h-[52px]
+              className="w-full sm:flex-1 inline-flex items-center justify-center rounded-2xl
+              px-5 py-2.5 text-sm sm:text-[15px] leading-none whitespace-nowrap
               text-white bg-gradient-to-r from-cyan-500/25 via-fuchsia-500/25 to-indigo-500/25
               border border-white/20 ring-1 ring-white/30 shadow-lg shadow-black/10 transition
               hover:from-cyan-500/35 hover:via-fuchsia-500/35 hover:to-indigo-500/35 hover:ring-white/40 active:scale-[0.99]"
             >
-              Probar y ver cómo responde
+              Probar demo
             </button>
 
             <a
@@ -126,10 +128,11 @@ export default function HeroGrid() {
               target="_blank"
               rel="noopener noreferrer"
               onClick={handleWhatsApp}
-              className="w-full sm:w-auto inline-flex items-center justify-center rounded-2xl px-6 py-3.5 min-h-[52px]
+              className="w-full sm:flex-1 inline-flex items-center justify-center rounded-2xl
+              px-5 py-2.5 text-sm sm:text-[15px] leading-none whitespace-nowrap
               text-white bg-white/5 border border-white/15 hover:bg-white/10 transition"
             >
-              Hablar por WhatsApp
+              WhatsApp
             </a>
           </div>
 
