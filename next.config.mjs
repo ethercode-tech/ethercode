@@ -1,4 +1,4 @@
-const isDev = process.env.NODE_ENV !== 'production';
+const isDev = process.env.NODE_ENV !== "production";
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -8,11 +8,11 @@ const nextConfig = {
         async headers() {
           return [
             {
-              source: '/(.*)',
+              source: "/(.*)",
               headers: [
                 {
-                  key: 'Cache-Control',
-                  value: 'public, max-age=300, must-revalidate', // 5 minutos
+                  key: "Cache-Control",
+                  value: "public, max-age=300, must-revalidate",
                 },
               ],
             },
@@ -20,11 +20,19 @@ const nextConfig = {
         },
       }),
 
-  // Opcional: para evitar recargas por archivos no relevantes
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "**",
+      },
+    ],
+  },
+
   webpack: (config, { isServer }) => {
     if (!isServer) {
       config.watchOptions = {
-        ignored: ['**/.next/**', '**/node_modules/**', '**/data/**'],
+        ignored: ["**/.next/**", "**/node_modules/**", "**/data/**"],
       };
     }
     return config;

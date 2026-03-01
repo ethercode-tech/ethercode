@@ -33,8 +33,9 @@ const NewsPage = () => {
       <div className="relative w-full h-64 mb-8">
         <Image
           src={news.urlToImage}
+          width="500"
+          height="300"
           alt={news.title}
-          fill
           className="object-cover rounded"
           sizes="100vw"
           priority 

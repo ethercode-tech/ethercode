@@ -7,3 +7,4 @@ Host: https://ethercode.com.ar
 
 # Sitemaps
 Sitemap: https://ethercode.com.ar/sitemap.xml
+Sitemap: https://ethercode.com.ar/blog-sitemap.xml
