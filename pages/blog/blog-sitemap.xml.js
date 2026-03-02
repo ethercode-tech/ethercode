@@ -1,4 +1,4 @@
-import { blogPosts } from "../data/blogPosts";
+import { blogPosts } from "../../data/blogPosts";
 
 export async function getServerSideProps({ res }) {
   const baseUrl = "https://ethercode.com.ar";
