@@ -72,6 +72,10 @@ class MyDocument extends Document {
             name="google-site-verification"
             content="pwslL4ojLoF0MNCk8JLU9VnQn9VFCBdh6LPae1v_6e8"
           />
+          <meta
+            name="google-site-verification"
+            content="EVScTjnZCkxub3id0PodGMz2zlt-L8wcBYNK0h11h0M"
+          />
 
           {/* Icons */}
           <link rel="icon" href="/img-logo/ethercode-isotipo-turquoise-hd.ico" />
