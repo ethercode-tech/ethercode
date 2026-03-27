@@ -1,5 +1,6 @@
 // pages/index.js
 import Head from "next/head";
+import Link from "next/link";
 import dynamic from "next/dynamic";
 import { useMemo } from "react";
 import NavbarIndex from "../components/NavbarIndex";
@@ -97,6 +98,15 @@ export default function Home() {
     { name: "Agentes IA", href: "#servicios" },
     { name: "Casos", href: "#casos" },
     { name: "Contacto", href: "#contacto" },
+  ];
+
+  const highIntentPages = [
+    { href: "/soluciones/empleado-digital-pymes", label: "Empleado digital para pymes" },
+    { href: "/soluciones/empleado-digital-inmobiliarias", label: "Empleado digital para inmobiliarias" },
+    { href: "/soluciones/automatizar-whatsapp-clinicas", label: "Automatizar WhatsApp para clínicas" },
+    { href: "/soluciones/empleado-digital-estudios-juridicos", label: "Empleado digital para estudios jurídicos" },
+    { href: "/soluciones/automatizacion-whatsapp-restaurantes", label: "Automatización WhatsApp para restaurantes" },
+    { href: "/soluciones/empleado-digital-concesionarias", label: "Empleado digital para concesionarias" },
   ];
 
   return (
@@ -208,6 +218,37 @@ export default function Home() {
                       {item.proof}
                     </div>
                   </article>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          <section id="soluciones-ia" className="px-4 pb-10 text-white">
+            <div className="mx-auto max-w-7xl rounded-2xl border border-white/10 bg-white/5 p-5">
+              <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+                <div>
+                  <h2 className="text-2xl font-bold">Soluciones por industria (intención alta)</h2>
+                  <p className="mt-1 text-sm text-white/75">
+                    Páginas específicas por rubro con caso, precio base referencial y CTA directo.
+                  </p>
+                </div>
+                <Link
+                  href="/soluciones"
+                  className="inline-flex rounded-xl border border-white/20 bg-white/5 px-4 py-2 text-sm text-white no-underline hover:bg-white/10 hover:no-underline"
+                >
+                  Ver todas
+                </Link>
+              </div>
+
+              <div className="mt-4 grid gap-2 md:grid-cols-2 lg:grid-cols-3">
+                {highIntentPages.map((item) => (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className="rounded-xl border border-white/10 bg-[#0a1128]/70 px-3 py-2 text-sm text-white no-underline hover:bg-[#111a3b] hover:no-underline"
+                  >
+                    {item.label}
+                  </Link>
                 ))}
               </div>
             </div>

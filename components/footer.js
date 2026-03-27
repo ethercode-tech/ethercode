@@ -6,7 +6,6 @@
 import Link from "next/link";
 import Image from "next/image";
 import Container from "./container";
-import { Link as ScrollLink } from "react-scroll";
 import { motion } from "framer-motion";
 import { trackEvent, GA_EVENTS } from "../lib/ga";
 
@@ -42,11 +41,11 @@ const Linkedin = ({ size = 24 }) => (
 // ==== Footer ====
 export default function Footer() {
   const mainNavigation = [
-    { name: "Inicio", to: "hero", isScrollLink: true },
-    { name: "Servicios", to: "servicios", isScrollLink: true },
-    { name: "Casos de uso", to: "useCases", isScrollLink: true },
-    { name: "Seguridad", to: "seguridad", isScrollLink: true },
-    { name: "Newsletter", to: "newsletter", isScrollLink: true },
+    { name: "Inicio", to: "/" },
+    { name: "Servicios", to: "/#servicios" },
+    { name: "Casos de uso", to: "/#casos" },
+    { name: "Seguridad", to: "/asistentes#faq" },
+    { name: "Newsletter", to: "/blog" },
   ];
 
   const services = [
@@ -142,21 +141,9 @@ export default function Footer() {
             <ul className="flex flex-col space-y-2 text-white/80">
               {mainNavigation.map((item, index) => (
                 <li key={index}>
-                  {item.isScrollLink ? (
-                    <ScrollLink
-                      to={item.to}
-                      smooth
-                      duration={500}
-                      className="cursor-pointer hover:text-white transition-colors"
-                      offset={-80}
-                    >
-                      {item.name}
-                    </ScrollLink>
-                  ) : (
-                    <Link href={item.to} className="hover:text-white transition-colors">
-                      {item.name}
-                    </Link>
-                  )}
+                  <Link href={item.to} className="hover:text-white transition-colors">
+                    {item.name}
+                  </Link>
                 </li>
               ))}
             </ul>
