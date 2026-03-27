@@ -273,9 +273,6 @@ export default function Footer() {
           <div className="flex items-center gap-4 text-xs text-white/60">
             <Link href="/privacy" className="hover:text-white transition-colors">Privacidad</Link>
             <Link href="/terms" className="hover:text-white transition-colors">Términos</Link>
-            <ScrollLink to="hero" smooth duration={500} offset={-80} className="cursor-pointer hover:text-white transition-colors">
-              Volver arriba
-            </ScrollLink>
           </div>
         </div>
       </Container>

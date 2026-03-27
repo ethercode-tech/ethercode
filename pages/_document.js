@@ -58,7 +58,14 @@ class MyDocument extends Document {
             name="description"
             content="ÉtherCode crea agentes de IA, automatizaciones y desarrollo web profesional para empresas en Argentina y Latinoamérica."
           />
-          <meta name="robots" content="index, follow" />
+          <meta
+            name="robots"
+            content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+          />
+          <meta
+            name="googlebot"
+            content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+          />
 
           {/* Verificación */}
           <meta

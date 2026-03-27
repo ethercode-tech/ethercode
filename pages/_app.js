@@ -5,7 +5,7 @@ import { Inter } from "next/font/google";
 import "../css/global.css";
 import Head from "next/head";
 import Script from "next/script";
-import { trackPageView } from "../lib/ga";
+import { bindAutoOutboundTracking, initAnalyticsSession, trackPageView } from "../lib/ga";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -17,16 +17,31 @@ function MyApp({ Component, pageProps }) {
   const trackingId = process.env.NEXT_PUBLIC_GA_TRACKING_ID;
 
   useEffect(() => {
-    const handleRouteChange = (url) => {
-      // Evita llamar GA si todavía no cargó
-      if (typeof window !== "undefined" && typeof window.gtag === "function") {
-        trackPageView(url, document?.title ?? "");
-      }
+    if (!trackingId) return;
+
+    initAnalyticsSession();
+
+    const trackCurrentPage = () => {
+      if (typeof window === "undefined") return;
+      trackPageView(window.location.href, document?.title ?? "");
+    };
+
+    // Primera carga: imprescindible para no perder UTMs de entrada
+    trackCurrentPage();
+
+    const handleRouteChange = () => {
+      // Espera un tick para que el <title> esté actualizado
+      window.requestAnimationFrame(trackCurrentPage);
     };
 
     router.events.on("routeChangeComplete", handleRouteChange);
-    return () => router.events.off("routeChangeComplete", handleRouteChange);
-  }, [router]);
+    const unbindOutboundTracking = bindAutoOutboundTracking();
+
+    return () => {
+      router.events.off("routeChangeComplete", handleRouteChange);
+      unbindOutboundTracking();
+    };
+  }, [router, trackingId]);
 
   return (
     <>
@@ -38,19 +53,22 @@ function MyApp({ Component, pageProps }) {
         <>
          <Script
             id="ga4-src"
-            strategy="lazyOnload"
+            strategy="afterInteractive"
             src={`https://www.googletagmanager.com/gtag/js?id=${trackingId}`}
           />
           <Script
             id="ga4-init"
-            strategy="lazyOnload"
+            strategy="afterInteractive"
             dangerouslySetInnerHTML={{
               __html: `
                 window.dataLayer = window.dataLayer || [];
                 function gtag(){dataLayer.push(arguments);}
                 window.gtag = gtag;
                 gtag('js', new Date());
-                gtag('config', '${trackingId}', { send_page_view: false });
+                gtag('config', '${trackingId}', {
+                  send_page_view: false,
+                  anonymize_ip: true
+                });
               `,
             }}
           />

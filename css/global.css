@@ -80,23 +80,18 @@
     /* Fondo oscuro global */
     @apply dark:bg-[#111827];
     overflow-x: hidden;
-
-    /* IMPORTANTE: no bloquees el scroll vertical */
-    overflow-y: visible;
   }
 
   html {
-    /* Evita saltos/efecto raro de scrollbars en algunos entornos */
-    scrollbar-gutter: stable;
-
-    /* iOS: mejora el comportamiento con 100vh y gestos */
-    height: -webkit-fill-available;
+    /* Unico scrollbar visible: lo controla body */
+    height: 100%;
+    overflow-y: hidden;
   }
 
   body {
-    /* El scroll real vive acá */
-    min-height: 100vh;
-    min-height: -webkit-fill-available;
+    /* Body se vuelve el unico contenedor scrollable */
+    height: 100%;
+    overflow-y: auto;
 
     /* iOS: hace el scroll “nativo”, evita sensación de trabado */
     -webkit-overflow-scrolling: touch;
@@ -104,6 +99,10 @@
     /* No bloquees el gesto de scroll */
     overscroll-behavior-y: auto;
     touch-action: pan-y;
+  }
+
+  #__next {
+    min-height: 100%;
   }
 
   h1,
