@@ -5,7 +5,13 @@ import { Inter } from "next/font/google";
 import "../css/global.css";
 import Head from "next/head";
 import Script from "next/script";
-import { bindAutoOutboundTracking, initAnalyticsSession, trackPageView } from "../lib/ga";
+import {
+  bindAutoEngagementTracking,
+  bindAutoOutboundTracking,
+  initAnalyticsSession,
+  trackPageView,
+  trackWebVital,
+} from "../lib/ga";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -20,10 +26,14 @@ function MyApp({ Component, pageProps }) {
     if (!trackingId) return;
 
     initAnalyticsSession();
+    const cleanupOutbounds = bindAutoOutboundTracking();
+    let cleanupEngagement = null;
 
     const trackCurrentPage = () => {
       if (typeof window === "undefined") return;
       trackPageView(window.location.href, document?.title ?? "");
+      if (typeof cleanupEngagement === "function") cleanupEngagement();
+      cleanupEngagement = bindAutoEngagementTracking();
     };
 
     // Primera carga: imprescindible para no perder UTMs de entrada
@@ -35,11 +45,11 @@ function MyApp({ Component, pageProps }) {
     };
 
     router.events.on("routeChangeComplete", handleRouteChange);
-    const unbindOutboundTracking = bindAutoOutboundTracking();
 
     return () => {
       router.events.off("routeChangeComplete", handleRouteChange);
-      unbindOutboundTracking();
+      if (typeof cleanupEngagement === "function") cleanupEngagement();
+      cleanupOutbounds();
     };
   }, [router, trackingId]);
 
@@ -67,7 +77,8 @@ function MyApp({ Component, pageProps }) {
                 gtag('js', new Date());
                 gtag('config', '${trackingId}', {
                   send_page_view: false,
-                  anonymize_ip: true
+                  anonymize_ip: true,
+                  debug_mode: ${process.env.NODE_ENV !== "production" ? "true" : "false"}
                 });
               `,
             }}
@@ -83,3 +94,7 @@ function MyApp({ Component, pageProps }) {
 }
 
 export default MyApp;
+
+export function reportWebVitals(metric) {
+  trackWebVital(metric);
+}
